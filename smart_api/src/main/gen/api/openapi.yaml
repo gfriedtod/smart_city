@@ -1,0 +1,283 @@
+openapi: 3.0.3
+info:
+  description: API documentation for Smart Cities application
+  title: Smart Cities API
+  version: 1.0.0
+servers:
+- description: Local development server
+  url: http://localhost:8080
+security:
+- bearerAuth: []
+paths:
+  /api/auth/login:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticationRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+          description: Successfully authenticated
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid credentials
+      security: []
+      summary: Authenticate user
+      tags:
+      - Authentication
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/incidents:
+    get:
+      parameters:
+      - description: Filter incidents by status
+        explode: true
+        in: query
+        name: status
+        required: false
+        schema:
+          enum:
+          - REPORTED
+          - IN_PROGRESS
+          - RESOLVED
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Incident'
+                type: array
+          description: List of incidents
+      summary: Get all incidents
+      tags:
+      - Incidents
+      x-accepts:
+      - application/json
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Incident'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Incident'
+          description: Incident created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid input
+      summary: Create new incident
+      tags:
+      - Incidents
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/incidents/{id}:
+    delete:
+      parameters:
+      - description: Incident ID
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: Incident deleted
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Incident not found
+      summary: Delete incident
+      tags:
+      - Incidents
+      x-accepts:
+      - application/json
+    get:
+      parameters:
+      - description: Incident ID
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Incident'
+          description: Incident details
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Incident not found
+      summary: Get incident by ID
+      tags:
+      - Incidents
+      x-accepts:
+      - application/json
+    put:
+      parameters:
+      - description: Incident ID
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Incident'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Incident'
+          description: Incident updated
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Incident not found
+      summary: Update incident
+      tags:
+      - Incidents
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    ErrorResponse:
+      example:
+        path: path
+        error: error
+        message: message
+        timestamp: 2000-01-23T04:56:07.000+00:00
+        status: 0
+      properties:
+        timestamp:
+          format: date-time
+          type: string
+        status:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+      type: object
+    AuthenticationRequest:
+      example:
+        password: password123
+        username: user@example.com
+      properties:
+        username:
+          example: user@example.com
+          type: string
+        password:
+          example: password123
+          format: password
+          type: string
+      required:
+      - password
+      - username
+      type: object
+    AuthenticationResponse:
+      example:
+        token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+      properties:
+        token:
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+          type: string
+      type: object
+    Incident:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        description: description
+        location:
+          latitude: 0.8008281904610115
+          longitude: 6.027456183070403
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        title: title
+        status: REPORTED
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          format: uuid
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          enum:
+          - REPORTED
+          - IN_PROGRESS
+          - RESOLVED
+          type: string
+        location:
+          $ref: '#/components/schemas/Incident_location'
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      type: object
+    Incident_location:
+      example:
+        latitude: 0.8008281904610115
+        longitude: 6.027456183070403
+      properties:
+        latitude:
+          format: double
+          type: number
+        longitude:
+          format: double
+          type: number
+      type: object
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+
