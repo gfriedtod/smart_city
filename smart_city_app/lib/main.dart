@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:smart_city_app/presentation/kernel.dart';
+import 'package:smart_city_app/presentation/screens/onboarding/color.dart';
+import 'package:smart_city_app/presentation/screens/onboarding/onboardinpage.dart';
+import 'package:smart_city_app/presentation/screens/profile/ProfilePage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,12 +14,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Dev',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xff04781E)),
+        colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
         scaffoldBackgroundColor: Colors.white,
+        useMaterial3: true,
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: Colors.black, fontFamily: 'EinaBold'),
+          bodyMedium: TextStyle(color: Colors.black, fontFamily: 'Eina'),
+          bodySmall: TextStyle(color: Colors.black, fontFamily: 'Eina'),
+        ),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: KernelView(),
     );
   }
 }
