@@ -31,7 +31,7 @@ public class AuthService {
         log.info("encode: {}", encode);
         var user = UserDto.builder()
                 .username(request.getUsername())
-                .email(EmailDto.builder().address(request.getEmail()).build())
+                .email(request.getEmail())
                 .password(encode)
                 .profile(UserProfile.USER)
                 .isActive(true)
@@ -43,6 +43,7 @@ public class AuthService {
         var token = jwtService.generateToken(user);
         return AuthResponse.builder()
                 .token(token)
+                .user(user)
                 .build();
     }
 
@@ -78,6 +79,7 @@ public class AuthService {
 
         return AuthResponse.builder()
                 .token(token)
+                .user(user)
                 .build();
     }
 }
