@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:smart_city_app/presentation/kernel.dart';
 import 'package:smart_city_app/presentation/screens/onboarding/color.dart';
 import 'package:smart_city_app/presentation/screens/onboarding/onboardinpage.dart';
+import 'package:smart_city_app/presentation/screens/profile/ProfilePage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,8 +18,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
         scaffoldBackgroundColor: Colors.white,
+        useMaterial3: true,
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: Colors.black, fontFamily: 'EinaBold'),
+          bodyMedium: TextStyle(color: Colors.black, fontFamily: 'Eina'),
+          bodySmall: TextStyle(color: Colors.black, fontFamily: 'Eina'),
+        ),
       ),
-      home: const OnboardingPage(),
+      home: KernelView(),
     );
   }
 }

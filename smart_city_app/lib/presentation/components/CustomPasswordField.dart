@@ -27,10 +27,10 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
       children: [
         Text(
           widget.label, // Accès aux propriétés du widget parent via widget.
-          style: const TextStyle(
+          style:  TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: Colors.black,
+            color: Colors.grey.shade600,
           ),
         ),
         const SizedBox(height: 8),
@@ -46,7 +46,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
             decoration: InputDecoration(
               hintText: widget.hint,
               // Accès aux propriétés du widget parent via widget.
-              hintStyle: const TextStyle(color: Colors.black45),
+              hintStyle:  TextStyle(color: Colors.grey.shade500),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 16,

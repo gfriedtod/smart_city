@@ -124,7 +124,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: ButtonComp(
-        width: MediaQuery.of(context).size.width * 0.8,
+        width: MediaQuery.of(context).size.width * 0.9,
         title: title,
         onPressed: onPressed,
       ),

@@ -5,19 +5,19 @@ import '../screens/onboarding/color.dart';
 class ButtonComp extends StatelessWidget {
   const ButtonComp({
     super.key,
-    required this.width,
+     this.width,
     required this.title,
     required this.onPressed,
   });
 
-  final double width;
+  final double? width;
   final String title;
   final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width,
+      width: width ?? double.infinity,
       height: 55,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(

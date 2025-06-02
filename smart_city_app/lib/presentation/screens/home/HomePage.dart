@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:smart_city_app/fake_core/data/IncidentCard_data.dart';
 import 'package:smart_city_app/presentation/components/IncidentCard.dart';
 
+import '../onboarding/color.dart';
 import '../profile/ProfilePage.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,7 +21,7 @@ class _HomePageState extends State<HomePage>
     const HomeScreenContent(),
     const Placeholder(), // Ajout d’incident
     const Placeholder(), // Notifications
-    const ProfilePage(), // Vers la page de profil
+    ProfilePage(), // Vers la page de profil
   ];
 
   @override
@@ -28,31 +30,7 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      body: _pages[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() => _currentIndex = index);
-        },
-        selectedItemColor: Colors.green.shade800,
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: false,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle_outline),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_none),
-            label: '',
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: ''),
-        ],
-      ),
-    );
+    return Scaffold(body: _pages[_currentIndex]);
   }
 }
 
@@ -80,12 +58,54 @@ class HomeScreenContent extends StatelessWidget {
             Stack(
               children: [
                 Container(
-                  height: 160,
+                  height: 220,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(20),
                     color: Colors.grey.shade100,
                   ),
-                  child: const Center(child: Text(" Map View Placeholder")),
+                  child: Expanded(
+                    child: OSMFlutter(
+                      controller: MapController(
+                        initPosition: GeoPoint(
+                          latitude: 47.4358055,
+                          longitude: 8.4737324,
+                        ),
+                        areaLimit: const BoundingBox(
+                          east: 10.4922941,
+                          north: 47.8084648,
+                          south: 45.817995,
+                          west: 5.9559113,
+                        ),
+                      ),
+                      osmOption: OSMOption(
+                        userTrackingOption: const UserTrackingOption(
+                          enableTracking: true,
+                          unFollowUser: false,
+                        ),
+                        zoomOption: const ZoomOption(
+                          initZoom: 8,
+                          minZoomLevel: 3,
+                          maxZoomLevel: 19,
+                          stepZoom: 1.0,
+                        ),
+                        userLocationMarker: UserLocationMaker(
+                          personMarker: const MarkerIcon(
+                            icon: Icon(
+                              Icons.location_history_rounded,
+                              color: Colors.red,
+                              size: 48,
+                            ),
+                          ),
+                          directionArrowMarker: const MarkerIcon(
+                            icon: Icon(Icons.double_arrow, size: 48),
+                          ),
+                        ),
+                        roadConfiguration: const RoadOption(
+                          roadColor: Colors.yellowAccent,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
                 const Positioned(
                   top: 10,
@@ -135,12 +155,10 @@ class HomeScreenContent extends StatelessWidget {
                   return Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     decoration: BoxDecoration(
-                      color: isSelected ? Colors.green.shade800 : Colors.white,
+                      color: isSelected ? primaryColor : Colors.white,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: isSelected
-                            ? Colors.green.shade800
-                            : Colors.grey.shade200,
+                        color: isSelected ? primaryColor : Colors.grey.shade200,
                       ),
                     ),
                     alignment: Alignment.center,

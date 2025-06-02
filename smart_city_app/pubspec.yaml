@@ -38,6 +38,13 @@ dependencies:
   font_awesome_flutter: ^10.8.0
   intl: ^0.20.2
   fl_chart: ^1.0.0
+  animated_bottom_navigation_bar: ^1.4.0
+  lucide_icons: ^0.257.0
+  localstorage: ^6.0.0
+  flutter_local_notifications: ^19.2.1
+  dart_amqp: ^0.3.1
+  osm_search_and_pick: ^0.1.5
+  flutter_osm_plugin: ^1.3.8
 
 
 dev_dependencies:
@@ -66,7 +73,18 @@ flutter:
   assets:
       - lib/assets/images/
   #   - images/a_dot_ham.jpeg
+  fonts:
+    - family: Eina
+      fonts:
+        - asset: lib/assets/font/Eina01-Regular.ttf
 
+    - family: EinaBold
+      fonts:
+        - asset: lib/assets/font/eina-03-bold.ttf
+
+    - family: Hashed
+      fonts:
+        - asset: lib/assets/font/Insaniburger-0OZ9.ttf
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

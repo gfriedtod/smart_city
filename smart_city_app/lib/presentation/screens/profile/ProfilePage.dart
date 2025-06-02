@@ -1,123 +1,95 @@
 import 'package:flutter/material.dart';
-import 'package:smart_city_app/presentation/screens/login/SigninPage.dart';
+import 'package:smart_city_app/presentation/components/CustomTextField.dart';
+import 'package:smart_city_app/presentation/components/button_comp.dart';
+import 'package:smart_city_app/presentation/screens/onboarding/color.dart';
 
-// class ProfilePage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text("Profile"),
-//       ),
-//       body: Center(
-//         child: Text(
-//           "Bienvenue sur la page Profil!",
-//           style: TextStyle(fontSize: 20),
-//         ),
-//       ),
-//     );
-//   }
-// }
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+  ProfilePage({Key? key}) : super(key: key);
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const BackButton(color: Colors.black),
-        title: const Text(
-          'Citoyen',
-          style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 0,
+        leading: const BackButton(),
+        title: const Text('Profile'),
+        centerTitle: true,
       ),
-      body: Column(
-        children: [
-          const SizedBox(height: 20),
-          const CircleAvatar(
-            radius: 40,
-            backgroundColor: Colors.purpleAccent,
-            child: Icon(Icons.person, size: 50, color: Colors.white),
-          ),
-          const SizedBox(height: 20),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 30),
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Column(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            Stack(
               children: [
-                Row(
-                  children: const [
-                    Icon(Icons.edit),
-                    SizedBox(width: 8),
-                    Text(
-                      'Modifier',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                const CircleAvatar(
+                  backgroundColor: primaryColor,
+                  radius: 50,
+                  backgroundImage: AssetImage('assets/images/profile.jpg'),
+                ),
+                Positioned(
+                  bottom: 0,
+                  right: 4,
+                  child: CircleAvatar(
+                    radius: 18,
+                    backgroundColor: Colors.white,
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.edit,
+                        size: 20,
+                        color: primaryColor,
+                      ),
+                      onPressed: () {
+                        // TODO: Navigate to edit profile or enable editing
+                        print("Edit profile tapped");
+                      },
                     ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Nom',
-                    border: OutlineInputBorder(),
                   ),
-                ),
-                const SizedBox(height: 10),
-                const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Prenom',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Phone number',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                TextButton(
-                  onPressed: () {},
-                  child: const Text('plus de paramètres'),
                 ),
               ],
             ),
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton.icon(
-            onPressed: () {
-              // Action de déconnexion ici
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SignInPage()),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue[900],
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
+            const SizedBox(height: 20),
+            CustomTextField(
+              label: "Name",
+              hint: "Name",
+              controller: _nameController,
             ),
-            icon: const Icon(Icons.logout),
-            label: const Text('Se déconnecter'),
-          ),
-        ],
+            const SizedBox(height: 15),
+            CustomTextField(
+              label: "Email",
+              hint: "Email Address",
+              controller: _emailController,
+            ),
+
+            SizedBox(height: MediaQuery.of(context).size.height * 0.3),
+            ButtonComp(
+              width: double.infinity,
+              title: 'update',
+              onPressed: () {},
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  Widget _buildInfoLabel(String text) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+          color: Colors.grey,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoValue(String text) {
+    return CustomTextField(label: text, hint: text);
   }
 }

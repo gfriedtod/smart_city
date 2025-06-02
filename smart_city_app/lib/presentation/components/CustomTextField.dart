@@ -6,6 +6,7 @@ class CustomTextField extends StatelessWidget {
   final String hint;
   final TextEditingController? controller; // Pour récupérer la valeur du champ
   final TextInputType keyboardType;
+  final bool? isPassword;
   final bool readOnly;
   final bool
   obscureText; // Pour des cas où un CustomTextField doit être obscurci
@@ -18,6 +19,7 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.readOnly = false,
     this.obscureText = false,
+    this.isPassword,
   });
 
   @override
@@ -27,10 +29,10 @@ class CustomTextField extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: Colors.black,
+            color: Colors.grey[600],
           ),
         ),
         const SizedBox(height: 8),
@@ -47,7 +49,10 @@ class CustomTextField extends StatelessWidget {
             obscureText: obscureText,
             decoration: InputDecoration(
               hintText: hint,
-              hintStyle: const TextStyle(color: Colors.black45),
+              hintStyle: TextStyle(
+                color: Colors.grey.shade500,
+                fontWeight: FontWeight.w100,
+              ),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 16,
