@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:smart_city_app/presentation/screens/onboarding/color.dart';
+import 'package:smart_city_app/presentation/screens/onboarding/onboardinpage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,12 +12,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Dev',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xff04781E)),
+        colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const OnboardingPage(),
     );
   }
 }
