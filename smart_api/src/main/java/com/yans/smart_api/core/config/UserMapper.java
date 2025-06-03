@@ -2,6 +2,7 @@ package com.yans.smart_api.core.config;
 
 import com.yans.smart_api.core.dto.UserDto;
 import com.yans.smart_api.entity.AppUser;
+import com.yans.smart_api.entity.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ public class UserMapper {
         return UserDto.builder()
                 .id(appUser.getId())
                 .username(appUser.getUsername())
-                .email(emailMapper.mapToDto(appUser.getEmail()))
+                .email(appUser.getEmail().getAddress())
                 .password(appUser.getPassword())
                 .profile(appUser.getProfile())
                 .createdAt(appUser.getCreatedAt())
@@ -36,7 +37,7 @@ public class UserMapper {
         return AppUser.builder()
                 .id(userDto.getId())
                 .username(userDto.getUsername())
-                .email(emailMapper.mapToEntity(userDto.getEmail()))
+                .email(new Email(userDto.getEmail()))
                 .password(userDto.getPassword())
                 .profile(userDto.getProfile())
                 .createdAt(userDto.getCreatedAt())

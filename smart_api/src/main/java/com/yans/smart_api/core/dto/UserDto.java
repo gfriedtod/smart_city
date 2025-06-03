@@ -21,6 +21,6 @@ public class UserDto implements Serializable {
     OffsetDateTime updatedAt;
     OffsetDateTime createdAt;
     Boolean isActive;
-    EmailDto email;
+    String email;
     UserProfile profile;
 }

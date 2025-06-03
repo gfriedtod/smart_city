@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_city_app/presentation/components/button_comp.dart';
+import 'package:smart_city_app/presentation/kernel.dart';
+import 'package:smart_city_app/presentation/screens/register/SignupPage.dart';
 
 import '../../components/CustomPasswordField.dart';
 import '../../components/CustomTextField.dart';
@@ -147,7 +149,7 @@ class _SignInPageState extends State<SignInPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const DisasterStatisticsPage(),
+                        builder: (context) => const SignUpPage(),
                       ),
                     );
                   },
@@ -176,5 +178,9 @@ class _SignInPageState extends State<SignInPage> {
     print('Password: $password');
     print('Remember Me: $_rememberMe');
     // Logique d'authentification ici
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => KernelView()),
+    );
   }
 }
