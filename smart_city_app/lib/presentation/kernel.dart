@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:smart_city_app/presentation/screens/disaster_statistic/disaster_statistic.dart';
 import 'package:smart_city_app/presentation/screens/home/HomePage.dart';
+import 'package:smart_city_app/presentation/screens/incident_details/IncidentDeatilPage.dart';
 import 'package:smart_city_app/presentation/screens/onboarding/color.dart';
 import 'package:smart_city_app/presentation/screens/onboarding/onboardinpage.dart';
 import 'package:smart_city_app/presentation/screens/profile/ProfilePage.dart';
 
+import '../fake_core/data/IncidentCard_data.dart';
+import '../fake_core/data/model/incident.dart';
 import 'components/open_street_map_search_and_pick.dart';
 
 class KernelView extends StatefulWidget {
@@ -17,8 +20,9 @@ class KernelView extends StatefulWidget {
 }
 
 class _KernelViewState extends State<KernelView> {
+  final List<Incident> _disasterArticles = IncidentArticlesData;
   List<Widget> pages = [
-    const HomePage(),
+     IncidentDetailPage(incident: IncidentArticlesData[0]),
     ProfilePage(),
     const DisasterStatisticsPage(),
     OnboardingPage(),

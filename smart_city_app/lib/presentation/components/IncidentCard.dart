@@ -98,36 +98,7 @@ class IncidentcardListItem extends StatelessWidget {
                     ),
                     const SizedBox(width: 10),
                     // Affichage conditionnel de timeAgo si présent dans les données
-                    if (incident.timeAgo != null) ...[
-                      FaIcon(
-                        FontAwesomeIcons.hourglassHalf,
-                        size: 14,
-                        color: Colors.grey[600],
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        incident.timeAgo!,
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                      ),
-                    ],
-                    // Affichage conditionnel des décès si présent dans les données
-                    if (incident.deaths != null) ...[
-                      const SizedBox(width: 10),
-                      FaIcon(
-                        FontAwesomeIcons.skull,
-                        size: 14,
-                        color: Colors.red[700],
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        '${incident.deaths} Deaths',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.red[700],
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+
                   ],
                 ),
               ],

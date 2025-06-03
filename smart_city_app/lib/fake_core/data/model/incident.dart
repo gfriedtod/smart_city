@@ -1,20 +1,20 @@
-// Fichier : lib/models/disaster.dart
+// Fichier : lib/models/incident.dart
 
 class Incident {
-  final String image;
+  final String image; // Une seule image, pas une liste d'URLs
   final String title;
   final String location;
   final DateTime date;
-  final String? timeAgo;
-  final int? deaths;
+  final String? description; // Ajouté pour la description de l'incident
+  final String? initialStatus; // Pour le statut initial de l'incident
 
   Incident({
     required this.image,
     required this.title,
     required this.location,
     required this.date,
-    this.timeAgo,
-    this.deaths,
+     this.description, // Requis pour la page de détails
+     this.initialStatus, // Requis pour la page de détails
   });
 
   factory Incident.fromMap(Map<String, dynamic> map) {
@@ -23,8 +23,8 @@ class Incident {
       title: map['title'] as String,
       location: map['location'] as String,
       date: map['date'] as DateTime,
-      timeAgo: map['timeAgo'] as String?,
-      deaths: map['deaths'] as int?,
+      description: map['description'] as String?,
+      initialStatus: map['initialStatus'] as String?,
     );
   }
 
@@ -34,8 +34,8 @@ class Incident {
       'title': title,
       'location': location,
       'date': date,
-      'timeAgo': timeAgo,
-      'deaths': deaths,
+      'description': description,
+      'initialStatus': initialStatus,
     };
   }
 }
