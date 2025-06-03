@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:smart_city_app/infrastructure/out/api/i_auth_impl.dart';
 import 'package:smart_city_app/presentation/kernel.dart';
@@ -10,6 +13,7 @@ import 'package:smart_city_app/presentation/screens/onboarding/onboardinpage.dar
 import 'package:smart_city_app/presentation/screens/profile/ProfilePage.dart';
 
 import 'core/constants/route.dart';
+import 'domain/dto/AuthResponse.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,15 +27,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    dioInterceptor(context);
     var auth = IAuthImpl(dio);
-    return   MultiRepositoryProvider(
+    return MultiRepositoryProvider(
       providers: [RepositoryProvider(create: (context) => auth)],
       child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => AuthBloc(auth),
-          ),
-        ],
+        providers: [BlocProvider(create: (context) => AuthBloc(auth))],
         child: MaterialApp.router(
           routerConfig: router,
           title: 'Dev',
@@ -45,14 +46,31 @@ class MyApp extends StatelessWidget {
               bodySmall: TextStyle(color: Colors.black, fontFamily: 'Eina'),
             ),
           ),
-          debugShowCheckedModeBanner: false,),
+          debugShowCheckedModeBanner: false,
+        ),
       ),
     );
+  }
 
-
-
-
-
+  void dioInterceptor(BuildContext context) {
+    final userString = localStorage.getItem('user');
+    if (userString != null) {
+      final user = AuthResponse.fromJson(jsonDecode(userString));
+      dio.interceptors.add(
+        InterceptorsWrapper(
+          onRequest: (options, handler) {
+            options.headers['authorization'] = '${user.token}';
+            return handler.next(options);
+          },
+          onResponse: (response, handler) {
+            if (response.statusCode == 403) {
+              context.pushReplacement(RoutesPath.signin.path);
+            }
+            return handler.next(response);
+          },
+        ),
+      );
+    }
   }
 }
 
