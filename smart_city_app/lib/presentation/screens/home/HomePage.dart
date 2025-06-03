@@ -3,41 +3,24 @@ import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:smart_city_app/fake_core/data/IncidentCard_data.dart';
 import 'package:smart_city_app/presentation/components/IncidentCard.dart';
 
-import '../onboarding/color.dart';
-import '../profile/ProfilePage.dart';
-
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage>
-    with AutomaticKeepAliveClientMixin {
-  int _currentIndex = 0;
-
-  final List<Widget> _pages = [
-    const HomeScreenContent(),
-    const Placeholder(), // Ajout d’incident
-    const Placeholder(), // Notifications
-    ProfilePage(), // Vers la page de profil
-  ];
-
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
-    return Scaffold(body: _pages[_currentIndex]);
+    return const HomeScreenContent();
   }
 }
 
-class HomeScreenContent extends StatelessWidget {
+class HomeScreenContent extends StatefulWidget {
   const HomeScreenContent({Key? key}) : super(key: key);
 
-  final List<String> categories = const [
+  @override
+  State<HomeScreenContent> createState() => _HomeScreenContentState();
+}
+
+class _HomeScreenContentState extends State<HomeScreenContent> {
+  final List<String> categories = [
     "Infrastructure",
     "Hygiène",
     "Sécurité",
@@ -45,6 +28,8 @@ class HomeScreenContent extends StatelessWidget {
     "Circulation",
     "Éclairage publique",
   ];
+
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +39,7 @@ class HomeScreenContent extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Map & Info
+            // Map
             Stack(
               children: [
                 Container(
@@ -63,46 +48,44 @@ class HomeScreenContent extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.grey.shade100,
                   ),
-                  child: Expanded(
-                    child: OSMFlutter(
-                      controller: MapController(
-                        initPosition: GeoPoint(
-                          latitude: 47.4358055,
-                          longitude: 8.4737324,
+                  child: OSMFlutter(
+                    controller: MapController(
+                      initPosition: GeoPoint(
+                        latitude: 47.4358055,
+                        longitude: 8.4737324,
+                      ),
+                      areaLimit: const BoundingBox(
+                        east: 10.4922941,
+                        north: 47.8084648,
+                        south: 45.817995,
+                        west: 5.9559113,
+                      ),
+                    ),
+                    osmOption: OSMOption(
+                      userTrackingOption: const UserTrackingOption(
+                        enableTracking: true,
+                        unFollowUser: false,
+                      ),
+                      zoomOption: const ZoomOption(
+                        initZoom: 8,
+                        minZoomLevel: 3,
+                        maxZoomLevel: 19,
+                        stepZoom: 1.0,
+                      ),
+                      userLocationMarker: UserLocationMaker(
+                        personMarker: const MarkerIcon(
+                          icon: Icon(
+                            Icons.location_history_rounded,
+                            color: Colors.red,
+                            size: 48,
+                          ),
                         ),
-                        areaLimit: const BoundingBox(
-                          east: 10.4922941,
-                          north: 47.8084648,
-                          south: 45.817995,
-                          west: 5.9559113,
+                        directionArrowMarker: const MarkerIcon(
+                          icon: Icon(Icons.double_arrow, size: 48),
                         ),
                       ),
-                      osmOption: OSMOption(
-                        userTrackingOption: const UserTrackingOption(
-                          enableTracking: true,
-                          unFollowUser: false,
-                        ),
-                        zoomOption: const ZoomOption(
-                          initZoom: 8,
-                          minZoomLevel: 3,
-                          maxZoomLevel: 19,
-                          stepZoom: 1.0,
-                        ),
-                        userLocationMarker: UserLocationMaker(
-                          personMarker: const MarkerIcon(
-                            icon: Icon(
-                              Icons.location_history_rounded,
-                              color: Colors.red,
-                              size: 48,
-                            ),
-                          ),
-                          directionArrowMarker: const MarkerIcon(
-                            icon: Icon(Icons.double_arrow, size: 48),
-                          ),
-                        ),
-                        roadConfiguration: const RoadOption(
-                          roadColor: Colors.yellowAccent,
-                        ),
+                      roadConfiguration: const RoadOption(
+                        roadColor: Colors.yellowAccent,
                       ),
                     ),
                   ),
@@ -118,10 +101,7 @@ class HomeScreenContent extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Earthquake in New York",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                      Text("Earthquake in New York", style: TextStyle(fontWeight: FontWeight.bold)),
                       Text("📅 Sun, 11 June 2024    ⏱ 3 min ago"),
                     ],
                   ),
@@ -130,43 +110,45 @@ class HomeScreenContent extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            // Title section
+            // Title
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
-                Text(
-                  "Recent Incidents",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                Text("See all", style: TextStyle(color: Colors.grey)),
+                Text("Incidents récents", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text("Voir tout", style: TextStyle(color: Colors.grey)),
               ],
             ),
             const SizedBox(height: 10),
 
             // Categories
             SizedBox(
-              height: 35,
+              height: 40,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 itemCount: categories.length,
                 separatorBuilder: (_, __) => const SizedBox(width: 10),
                 itemBuilder: (context, index) {
-                  final isSelected = index == 0;
-                  return Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      color: isSelected ? primaryColor : Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: isSelected ? primaryColor : Colors.grey.shade200,
+                  final isSelected = index == selectedIndex;
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedIndex = index;
+                      });
+                      print('Catégorie sélectionnée : ${categories[index]}');
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: isSelected ? Colors.green.shade800 : Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      categories[index],
-                      style: TextStyle(
-                        color: isSelected ? Colors.white : Colors.black,
-                        fontWeight: FontWeight.w500,
+                      alignment: Alignment.center,
+                      child: Text(
+                        categories[index],
+                        style: TextStyle(
+                          color: isSelected ? Colors.white : Colors.black,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   );
@@ -175,7 +157,7 @@ class HomeScreenContent extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            // List of Incidents
+            // Incident list
             Expanded(
               child: ListView.builder(
                 itemCount: IncidentArticlesData.length,
