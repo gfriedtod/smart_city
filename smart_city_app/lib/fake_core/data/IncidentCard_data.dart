@@ -19,7 +19,7 @@ List<Incident> IncidentArticlesData = [
     location: 'Christchurch, Canterbury',
     date: DateTime(2024, 6, 8),
     description: "A powerful earthquake struck Christchurch on February 22, 2011, causing widespread damage and claiming 185 lives. The city continues its recovery efforts.",
-    initialStatus: 'Reported',
+    initialStatus: 'Resolved',
   ),
   Incident(
     image: 'lib/assets/images/plage.jpg',
