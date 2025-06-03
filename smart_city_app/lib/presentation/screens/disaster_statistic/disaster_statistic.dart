@@ -57,6 +57,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart'; // Pour la date
 
 import '../../../fake_core/data/IncidentCard_data.dart';
@@ -189,7 +190,7 @@ class _DisasterStatisticsPageState extends State<DisasterStatisticsPage>
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
           },
         ),
         actions: [

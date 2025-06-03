@@ -1,10 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:smart_city_app/core/constants/route.dart';
 import 'package:smart_city_app/presentation/components/button_comp.dart';
 import 'package:smart_city_app/presentation/kernel.dart';
 import 'package:smart_city_app/presentation/screens/register/SignupPage.dart';
 
 import '../../components/CustomPasswordField.dart';
 import '../../components/CustomTextField.dart';
+import '../../providers/authentication/auth_bloc.dart';
 import '../disaster_statistic/disaster_statistic.dart';
 import '../onboarding/color.dart';
 
@@ -37,7 +43,7 @@ class _SignInPageState extends State<SignInPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
           },
         ),
       ),
@@ -111,7 +117,7 @@ class _SignInPageState extends State<SignInPage> {
                 GestureDetector(
                   onTap: () {
                     // Gérer l'action "Forgot Password"
-                    print('Forgot Password cliqué!');
+                    log('Forgot Password cliqué!');
                   },
                   child: Text(
                     'Forgot Password',
@@ -127,10 +133,53 @@ class _SignInPageState extends State<SignInPage> {
             const SizedBox(height: 30),
 
             // Bouton "Sign In" (sans CustomActionButton pour le moment)
-            ButtonComp(
-              width: double.infinity,
-              title: title,
-              onPressed: register,
+            BlocConsumer<AuthBloc, AuthState>(
+              listenWhen: (previous, current) {
+                return previous != current &&
+                    ModalRoute.of(context)?.settings.name ==
+                        RoutesPath.signin.path.replaceAll('/', '');
+              },
+              listener: (context, state) {
+                state.maybeMap(
+                  orElse: () {},
+                  authenticated: (state) {
+                    context.push(RoutesPath.home.path);
+                  },
+                  failure: (state) {
+                    if (context.mounted && state.failure != null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.failure.toString()),
+                          duration: const Duration(seconds: 4),
+                          action: SnackBarAction(
+                            label: 'Dismiss',
+                            onPressed: () {
+                              ScaffoldMessenger.of(
+                                context,
+                              ).hideCurrentSnackBar();
+                            },
+                          ),
+                          behavior: SnackBarBehavior.floating,
+                        ),
+                      );
+                    }
+                  },
+                );
+              },
+              builder: (context, state) {
+                return state.maybeWhen(
+                  orElse: () => ButtonComp(
+                    width: double.infinity,
+                    title: title,
+                    onPressed: login,
+                  ),
+                  loading: () => ButtonComp(
+                    title: title,
+                    onPressed: () {},
+                    isLoading: true,
+                  ),
+                );
+              },
             ),
 
             const SizedBox(height: 75),
@@ -146,12 +195,7 @@ class _SignInPageState extends State<SignInPage> {
                 GestureDetector(
                   onTap: () {
                     // Naviguer vers la page d'inscription
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SignUpPage(),
-                      ),
-                    );
+                    context.push(RoutesPath.signup.path);
                   },
                   child: Text(
                     'Sign Up',
@@ -170,17 +214,24 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  void register() {
+  void login() {
     final String email = _emailController.text;
     final String password = _passwordController.text;
-    print('Sign In cliqué!');
-    print('Email: $email');
-    print('Password: $password');
-    print('Remember Me: $_rememberMe');
-    // Logique d'authentification ici
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => KernelView()),
+    log('Sign In cliqué!');
+    log('Email: $email');
+    log('Password: $password');
+    log('Remember Me: $_rememberMe');
+
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter email and password')),
+      );
+      return;
+    }
+    ;
+    context.read<AuthBloc>().add(
+      AuthEvent.login(email: email, password: password),
     );
+    // Logique d'authentification ici
   }
 }

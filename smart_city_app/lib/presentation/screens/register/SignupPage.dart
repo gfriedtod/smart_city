@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:smart_city_app/core/constants/route.dart';
 import 'package:smart_city_app/presentation/components/button_comp.dart';
+import 'package:smart_city_app/presentation/kernel.dart';
 import 'package:smart_city_app/presentation/screens/onboarding/color.dart';
 
 import '../../components/CustomPasswordField.dart';
 import '../../components/CustomTextField.dart';
+import '../../providers/authentication/auth_bloc.dart';
 import '../login/SigninPage.dart';
 
 class SignUpPage extends StatefulWidget {
+  static Object routeName = '/signup';
+
   const SignUpPage({super.key});
 
   @override
@@ -21,6 +28,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(ModalRoute.of(context)?.settings.name);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -28,7 +36,7 @@ class _SignUpPageState extends State<SignUpPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context);
+            context.pop(context);
           },
         ),
       ),
@@ -97,14 +105,68 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ),
             const SizedBox(height: 30),
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ButtonComp(
-                width: double.infinity,
-                title: 'Sign Up',
-                onPressed: () {},
-              ),
+            BlocConsumer<AuthBloc, AuthState>(
+              listenWhen: (previous, current) {
+                return previous != current &&
+                    ModalRoute.of(context)?.settings.name ==
+                        RoutesPath.signup.path.replaceAll('/', '');
+                return previous != current;
+              },
+              listener: (context, state) {
+                state.maybeMap(
+                  orElse: () {},
+                  authenticated: (state) {
+                    context.push(RoutesPath.home.path);
+                  },
+                  failure: (state) {
+                    if (context.mounted && state.failure != null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.failure.toString()),
+                          duration: const Duration(seconds: 4),
+                          action: SnackBarAction(
+                            label: 'Dismiss',
+                            onPressed: () {
+                              ScaffoldMessenger.of(
+                                context,
+                              ).hideCurrentSnackBar();
+                            },
+                          ),
+                          behavior: SnackBarBehavior.floating,
+                        ),
+                      );
+                    }
+                  },
+                );
+              },
+              builder: (context, state) {
+                print(state);
+                return state.maybeMap(
+                  orElse: () => _ButtonComp(
+                    register: () {
+                      if (_fullNameController.text.isNotEmpty &&
+                          _emailController.text.isNotEmpty &&
+                          _passwordController.text.isNotEmpty) {
+                        context.read<AuthBloc>().add(
+                          AuthEvent.register(
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                            username: _fullNameController.text,
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Veuillez remplir tous les champs'),
+                          ),
+                        );
+                      }
+                    },
+                    loading: false,
+                  ),
+                  loading: (_) => _ButtonComp(register: () {}, loading: true),
+                );
+              },
             ),
             const SizedBox(height: 40),
             Row(
@@ -116,12 +178,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SignInPage(),
-                      ),
-                    );
+                    context.push(RoutesPath.signin.path);
                   },
                   child: Text(
                     'Sign In',
@@ -136,6 +193,27 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ButtonComp extends StatelessWidget {
+  const _ButtonComp({super.key, required this.register, this.loading});
+
+  final Null Function() register;
+  final bool? loading;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 50,
+      child: ButtonComp(
+        isLoading: loading,
+        width: double.infinity,
+        title: 'Sign Up',
+        onPressed: register,
       ),
     );
   }

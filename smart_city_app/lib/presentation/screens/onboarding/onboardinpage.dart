@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:smart_city_app/core/constants/route.dart';
 
 import '../../../fake_core/data/onboarding_data.dart';
 import '../../components/button_comp.dart';
@@ -109,10 +111,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
         : "Continue";
     onPressed() {
       if (currentIndex == controller.items.length - 1) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const SignUpPage()),
-        );
+        context.push(RoutesPath.signin.path);
       } else {
         pageController.nextPage(
           duration: const Duration(milliseconds: 700),
