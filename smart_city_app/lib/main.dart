@@ -1,32 +1,58 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:localstorage/localstorage.dart';
+import 'package:smart_city_app/infrastructure/out/api/i_auth_impl.dart';
 import 'package:smart_city_app/presentation/kernel.dart';
+import 'package:smart_city_app/presentation/providers/authentication/auth_bloc.dart';
 import 'package:smart_city_app/presentation/screens/onboarding/color.dart';
 import 'package:smart_city_app/presentation/screens/onboarding/onboardinpage.dart';
 import 'package:smart_city_app/presentation/screens/profile/ProfilePage.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'core/constants/route.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initLocalStorage();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+  final Dio dio = Dio();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Dev',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
-        scaffoldBackgroundColor: Colors.white,
-        useMaterial3: true,
-        textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: Colors.black, fontFamily: 'EinaBold'),
-          bodyMedium: TextStyle(color: Colors.black, fontFamily: 'Eina'),
-          bodySmall: TextStyle(color: Colors.black, fontFamily: 'Eina'),
-        ),
+    var auth = IAuthImpl(dio);
+    return   MultiRepositoryProvider(
+      providers: [RepositoryProvider(create: (context) => auth)],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => AuthBloc(auth),
+          ),
+        ],
+        child: MaterialApp.router(
+          routerConfig: router,
+          title: 'Dev',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
+            scaffoldBackgroundColor: Colors.white,
+            useMaterial3: true,
+            textTheme: const TextTheme(
+              bodyLarge: TextStyle(color: Colors.black, fontFamily: 'EinaBold'),
+              bodyMedium: TextStyle(color: Colors.black, fontFamily: 'Eina'),
+              bodySmall: TextStyle(color: Colors.black, fontFamily: 'Eina'),
+            ),
+          ),
+          debugShowCheckedModeBanner: false,),
       ),
-      home: KernelView(),
     );
+
+
+
+
+
   }
 }
 
