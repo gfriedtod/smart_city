@@ -22,7 +22,7 @@ class IIncidentImpl extends IIncident {
   }
 
   @override
-  Future<Incident> getIncidents() async {
+  Future<List<Incident>> getIncidents() async {
     try {
       final response = await dio.get(ApiEndpoint.incidents.url);
       return response.data.map((value) => Incident.fromMap(value.data));
