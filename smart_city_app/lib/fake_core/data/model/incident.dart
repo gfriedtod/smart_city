@@ -28,7 +28,7 @@ class Incident {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       'image': image,
       'title': title,
