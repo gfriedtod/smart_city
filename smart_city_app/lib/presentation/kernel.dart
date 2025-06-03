@@ -1,13 +1,7 @@
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
-import 'package:smart_city_app/presentation/screens/disaster_statistic/disaster_statistic.dart';
 import 'package:smart_city_app/presentation/screens/home/HomePage.dart';
-import 'package:smart_city_app/presentation/screens/onboarding/color.dart';
-import 'package:smart_city_app/presentation/screens/onboarding/onboardinpage.dart';
 import 'package:smart_city_app/presentation/screens/profile/ProfilePage.dart';
-
-import 'components/open_street_map_search_and_pick.dart';
+import 'package:smart_city_app/presentation/screens/form/UploadIncident.dart';
 
 class KernelView extends StatefulWidget {
   const KernelView({super.key});
@@ -17,59 +11,80 @@ class KernelView extends StatefulWidget {
 }
 
 class _KernelViewState extends State<KernelView> {
-  List<Widget> pages = [
-    const HomePage(),
-    ProfilePage(),
-    const DisasterStatisticsPage(),
-    OnboardingPage(),
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = const [
+    HomeScreenContent(),
+    Placeholder(), // Page Liste
+    Placeholder(), // Page Notifications
   ];
-  int index = 0;
+
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: pages[index],
-      floatingActionButton: FloatingActionButton.small(
+      // ✅ Contenu avec état conservé
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _pages,
+      ),
+
+      // ✅ Bouton central flottant (ajout d’incident)
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => Scaffold(
-                backgroundColor: Colors.white,
-                body: OpenStreetMapSearchAndPick(
-                  buttonColor: primaryColor,
-                  locationPinIconColor: primaryColor,
-                  buttonText: 'Set Current Location',
-                  onPicked: (pickedData) async {},
-                ),
-              ),
-            ),
+            MaterialPageRoute(builder: (context) => const ReportIncidentPage()),
           );
-          // Navigator.push(context, MaterialPageRoute(builder: (context,) => const MenuInsertionPage()));
         },
-        backgroundColor: primaryColor,
-        child: const Icon(LucideIcons.plus, color: Colors.white),
-        //params
+        backgroundColor: Colors.green.shade800,
+        child: const Icon(Icons.add, color: Colors.white),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
-      bottomNavigationBar: SizedBox(
-        height: 60,
-        child: AnimatedBottomNavigationBar(
-          backgroundColor: Colors.white,
-          activeColor: primaryColor,
-          leftCornerRadius: 32,
-          rightCornerRadius: 32,
-          icons: const [
-            LucideIcons.home,
-            LucideIcons.list,
-            LucideIcons.shoppingBag,
-            LucideIcons.instagram,
-          ],
-          gapLocation: GapLocation.center,
-          activeIndex: index,
-          onTap: (item) => setState(() => index = item),
-          //other params
+      // ✅ Barre de navigation avec encoche
+      bottomNavigationBar: BottomAppBar(
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 8.0,
+        color: Colors.white,
+        elevation: 10,
+        child: SizedBox(
+          height: 20,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                icon: Icon(
+                  Icons.home_outlined,
+                  color: _selectedIndex == 0 ? Colors.green.shade800 : Colors.grey,
+                ),
+                onPressed: () => setState(() => _selectedIndex = 0),
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.list_alt,
+                  color: _selectedIndex == 1 ? Colors.green.shade800 : Colors.grey,
+                ),
+                onPressed: () => setState(() => _selectedIndex = 1),
+              ),
+              const SizedBox(width: 48), // Espace pour le bouton +
+              IconButton(
+                icon: Icon(
+                  Icons.notifications_outlined,
+                  color: _selectedIndex == 2 ? Colors.green.shade800 : Colors.grey,
+                ),
+                onPressed: () => setState(() => _selectedIndex = 2),
+              ),
+              IconButton(
+                icon: const Icon(Icons.account_circle_outlined, color: Colors.grey),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ProfilePage()),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
