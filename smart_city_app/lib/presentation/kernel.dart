@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_city_app/presentation/screens/home/HomePage.dart';
 import 'package:smart_city_app/presentation/screens/profile/ProfilePage.dart';
 import 'package:smart_city_app/presentation/screens/form/UploadIncident.dart';
+import 'package:smart_city_app/presentation/screens/personal_incidents/MyIncidents.dart';
 
 class KernelView extends StatefulWidget {
   const KernelView({super.key});
@@ -16,7 +17,7 @@ class _KernelViewState extends State<KernelView> {
   final List<Widget> _pages = const [
     HomeScreenContent(),
     Placeholder(), // Page Liste
-    Placeholder(), // Page Notifications
+    IncidentStatusPage(), // Page Notifications
   ];
 
   @override
@@ -44,15 +45,16 @@ class _KernelViewState extends State<KernelView> {
       // ✅ Barre de navigation avec encoche
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
-        notchMargin: 8.0,
+        notchMargin: 6.0, // Réduit l’espace autour du bouton +
         color: Colors.white,
         elevation: 10,
         child: SizedBox(
-          height: 20,
+          height: 8, // 👈 Hauteur réduite ici (tu peux tester 44 aussi)
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
+                iconSize: 20, // 👈 icône plus petite
                 icon: Icon(
                   Icons.home_outlined,
                   color: _selectedIndex == 0 ? Colors.green.shade800 : Colors.grey,
@@ -60,26 +62,29 @@ class _KernelViewState extends State<KernelView> {
                 onPressed: () => setState(() => _selectedIndex = 0),
               ),
               IconButton(
+                iconSize: 22,
                 icon: Icon(
                   Icons.list_alt,
                   color: _selectedIndex == 1 ? Colors.green.shade800 : Colors.grey,
                 ),
                 onPressed: () => setState(() => _selectedIndex = 1),
               ),
-              const SizedBox(width: 48), // Espace pour le bouton +
+              const SizedBox(width: 10), // espace réservé au bouton +
               IconButton(
+                iconSize: 22,
                 icon: Icon(
-                  Icons.notifications_outlined,
+                  Icons.alarm_outlined,
                   color: _selectedIndex == 2 ? Colors.green.shade800 : Colors.grey,
                 ),
                 onPressed: () => setState(() => _selectedIndex = 2),
               ),
               IconButton(
+                iconSize: 22,
                 icon: const Icon(Icons.account_circle_outlined, color: Colors.grey),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const ProfilePage()),
+                    MaterialPageRoute(builder: (context) =>  ProfilePage()),
                   );
                 },
               ),
@@ -87,6 +92,7 @@ class _KernelViewState extends State<KernelView> {
           ),
         ),
       ),
+
     );
   }
 }
