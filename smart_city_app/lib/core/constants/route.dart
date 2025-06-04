@@ -10,6 +10,7 @@ import 'package:smart_city_app/presentation/screens/home/HomePage.dart';
 import 'package:smart_city_app/presentation/screens/login/SigninPage.dart';
 import 'package:smart_city_app/presentation/screens/onboarding/onboardinpage.dart';
 import 'package:smart_city_app/presentation/screens/register/SignupPage.dart';
+import 'package:smart_city_app/presentation/screens/upload_incindent/upload_incident.dart';
 
 import '../../presentation/screens/profile/ProfilePage.dart';
 
@@ -19,6 +20,7 @@ enum RoutesPath {
   signup('/signup'),
   signin('/signin'),
   profile('/profile'),
+  report('/report'),
   onboarding('/onboarding');
 
   final String path;
@@ -43,6 +45,10 @@ final router = GoRouter(
         }
         return RoutesPath.onboarding.path;
       },
+    ),
+    GoRoute(
+      path: RoutesPath.report.path,
+      builder: (context, state) => ReportIncidentPage(),
     ),
     GoRoute(
       path: RoutesPath.home.path,

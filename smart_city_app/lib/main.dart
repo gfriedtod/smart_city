@@ -4,19 +4,28 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:smart_city_app/infrastructure/out/api/i_auth_impl.dart';
 import 'package:smart_city_app/presentation/kernel.dart';
 import 'package:smart_city_app/presentation/providers/authentication/auth_bloc.dart';
+import 'package:smart_city_app/presentation/providers/incident/incident_bloc.dart';
 import 'package:smart_city_app/presentation/screens/onboarding/color.dart';
 import 'package:smart_city_app/presentation/screens/onboarding/onboardinpage.dart';
 import 'package:smart_city_app/presentation/screens/profile/ProfilePage.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthResponse;
 
 import 'core/constants/route.dart';
 import 'domain/dto/AuthResponse.dart';
+import 'infrastructure/out/api/i_incident_impl.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(
+    url: 'https://ifthknoghckblnvnkbld.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlmdGhrbm9naGNrYmxudm5rYmxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg1MzgyODcsImV4cCI6MjA2NDExNDI4N30.DXnyknmEK7p7fh0MXwlqNns-f4HivKXiKKT5YWoiymE',
+  );
   await initLocalStorage();
   runApp(MyApp());
 }
@@ -29,10 +38,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     dioInterceptor(context);
     var auth = IAuthImpl(dio);
+    var incident = IIncidentImpl(dio);
     return MultiRepositoryProvider(
-      providers: [RepositoryProvider(create: (context) => auth)],
+      providers: [
+        RepositoryProvider(create: (context) => auth),
+        RepositoryProvider(create: (context) => incident),
+      ],
       child: MultiBlocProvider(
-        providers: [BlocProvider(create: (context) => AuthBloc(auth))],
+        providers: [
+          BlocProvider(create: (context) => AuthBloc(auth)),
+          BlocProvider(
+            create: (context) =>
+                IncidentBloc(incident)..add(IncidentEvent.getIncidents()),
+          ),
+        ],
         child: MaterialApp.router(
           routerConfig: router,
           title: 'Dev',
@@ -40,11 +59,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
             scaffoldBackgroundColor: Colors.white,
             useMaterial3: true,
-            textTheme: const TextTheme(
-              bodyLarge: TextStyle(color: Colors.black, fontFamily: 'EinaBold'),
-              bodyMedium: TextStyle(color: Colors.black, fontFamily: 'Eina'),
-              bodySmall: TextStyle(color: Colors.black, fontFamily: 'Eina'),
-            ),
+            textTheme: GoogleFonts.poppinsTextTheme(),
           ),
           debugShowCheckedModeBanner: false,
         ),
@@ -59,7 +74,7 @@ class MyApp extends StatelessWidget {
       dio.interceptors.add(
         InterceptorsWrapper(
           onRequest: (options, handler) {
-            options.headers['authorization'] = '${user.token}';
+            options.headers['authorization'] = 'Bearer ${user.token}';
             return handler.next(options);
           },
           onResponse: (response, handler) {

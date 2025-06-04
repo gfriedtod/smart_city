@@ -24,11 +24,12 @@ public class IncidentMapper {
                 .image(incident.getImage())
                 .longitude(incident.getLongitude())
                 .latitude(incident.getLatitude())
-                .createdAt(incident.getCreatedAt())
-                .updatedAt(incident.getUpdatedAt())
+                .createdAt(incident.getCreatedAt().toLocalDateTime())
+                .updatedAt(incident.getUpdatedAt().toLocalDateTime())
                 .user(userMapper.toDto(incident.getAppUser()))
                 .category(categoryMapper.toDto(incident.getCategory()))
                 .status(incident.getStatus())
+                .address(incident.getAddress())
                 .build();
     }
 
@@ -46,6 +47,7 @@ public class IncidentMapper {
         incident.setAppUser(userMapper.toEntity(incidentDto.getUser()));
         incident.setCategory(categoryMapper.toEntity(incidentDto.getCategory()));
         incident.setStatus(incidentDto.getStatus());
+        incident.setAddress(incidentDto.getAddress());
         return incident;
     }
 }

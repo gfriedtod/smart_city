@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.Value;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -22,9 +23,11 @@ public class IncidentDto implements Serializable {
     String image;
     Double longitude;
     Double latitude;
-    OffsetDateTime createdAt;
-    OffsetDateTime updatedAt;
+    LocalDateTime createdAt;
+    LocalDateTime updatedAt;
     UserDto user;
     CategoryDto category;
     IncidentStatus status;
+    String address;
+
 }

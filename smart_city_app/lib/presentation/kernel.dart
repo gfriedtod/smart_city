@@ -1,11 +1,14 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:smart_city_app/core/constants/route.dart';
 import 'package:smart_city_app/presentation/screens/disaster_statistic/disaster_statistic.dart';
 import 'package:smart_city_app/presentation/screens/home/HomePage.dart';
 import 'package:smart_city_app/presentation/screens/onboarding/color.dart';
 import 'package:smart_city_app/presentation/screens/onboarding/onboardinpage.dart';
 import 'package:smart_city_app/presentation/screens/profile/ProfilePage.dart';
+import 'package:smart_city_app/presentation/screens/upload_incindent/upload_incident.dart';
 
 import 'components/open_street_map_search_and_pick.dart';
 
@@ -21,7 +24,7 @@ class _KernelViewState extends State<KernelView> {
     const HomePage(),
     ProfilePage(),
     const DisasterStatisticsPage(),
-    OnboardingPage(),
+    ReportIncidentPage(),
   ];
   int index = 0;
   @override
@@ -31,19 +34,8 @@ class _KernelViewState extends State<KernelView> {
       body: pages[index],
       floatingActionButton: FloatingActionButton.small(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Scaffold(
-                backgroundColor: Colors.white,
-                body: OpenStreetMapSearchAndPick(
-                  buttonColor: primaryColor,
-                  locationPinIconColor: primaryColor,
-                  buttonText: 'Set Current Location',
-                  onPicked: (pickedData) async {},
-                ),
-              ),
-            ),
+          context.push(
+            RoutesPath.report.path,
           );
           // Navigator.push(context, MaterialPageRoute(builder: (context,) => const MenuInsertionPage()));
         },
@@ -75,3 +67,5 @@ class _KernelViewState extends State<KernelView> {
     );
   }
 }
+
+
