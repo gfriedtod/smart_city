@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../domain/dto/IncidentDto.dart';
+
 class IncidentStatusPage extends StatefulWidget {
   const IncidentStatusPage({Key? key}) : super(key: key);
 
@@ -8,32 +10,32 @@ class IncidentStatusPage extends StatefulWidget {
 }
 
 class _IncidentStatusPageState extends State<IncidentStatusPage> {
-  String selectedStatus = 'Reported';
+  String selectedStatus = IncidentStatus.SUBMIT.name;
 
   final List<Map<String, dynamic>> incidents = [
     {
       "title": "Inondation Et Flaques d'eau",
       "desc": "Les rigoles sont bouchées...",
       "date": "24 Mai, 2025",
-      "status": "Reported"
+      "status": "Reported",
     },
     {
       "title": "Inondation Et Flaques d'eau",
       "desc": "Les rigoles sont bouchées...",
       "date": "24 Mai, 2025",
-      "status": "In Progress"
+      "status": "In Progress",
     },
     {
       "title": "Inondation Et Flaques d'eau",
       "desc": "Les rigoles sont bouchées...",
       "date": "24 Mai, 2025",
-      "status": "Treated"
+      "status": "Treated",
     },
     {
       "title": "Inondation Et Flaques d'eau",
       "desc": "Les rigoles sont bouchées...",
       "date": "24 Mai, 2025",
-      "status": "Rejected"
+      "status": "Rejected",
     },
   ];
 
@@ -41,36 +43,32 @@ class _IncidentStatusPageState extends State<IncidentStatusPage> {
     'Reported',
     'In Progress',
     'Treated',
-    'Rejected'
+    'Rejected',
   ];
 
-  Color statusColor(String status) {
+  Color statusColor(IncidentStatus status) {
     switch (status) {
-      case 'Reported':
+      case IncidentStatus.SUBMIT:
         return Colors.deepPurple;
-      case 'In Progress':
+      case IncidentStatus.PROGRESS:
         return Colors.orange;
-      case 'Treated':
+      case IncidentStatus.RESOLVED:
         return Colors.green;
-      case 'Rejected':
+      case IncidentStatus.REJECTED:
         return Colors.red;
-      default:
-        return Colors.grey;
     }
   }
 
-  double getProgress(String status) {
+  double getProgress(IncidentStatus status) {
     switch (status) {
-      case 'Reported':
+      case IncidentStatus.SUBMIT:
         return 0.25;
-      case 'In Progress':
+      case IncidentStatus.PROGRESS:
         return 0.5;
-      case 'Treated':
+      case IncidentStatus.RESOLVED:
         return 1.0;
-      case 'Rejected':
+      case IncidentStatus.REJECTED:
         return 1.0;
-      default:
-        return 0.0;
     }
   }
 
@@ -118,7 +116,9 @@ class _IncidentStatusPageState extends State<IncidentStatusPage> {
                       onTap: () => setState(() => selectedStatus = status),
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 14, vertical: 6),
+                          horizontal: 14,
+                          vertical: 6,
+                        ),
                         decoration: BoxDecoration(
                           color: isSelected
                               ? Colors.green.shade800
@@ -169,7 +169,7 @@ class _IncidentStatusPageState extends State<IncidentStatusPage> {
                             color: Colors.black12,
                             blurRadius: 2,
                             offset: const Offset(0, 1),
-                          )
+                          ),
                         ],
                       ),
                       child: Row(
@@ -181,8 +181,10 @@ class _IncidentStatusPageState extends State<IncidentStatusPage> {
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.grey.shade400,
                             ),
-                            child: const Icon(Icons.image_outlined,
-                                color: Colors.white),
+                            child: const Icon(
+                              Icons.image_outlined,
+                              color: Colors.white,
+                            ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -192,7 +194,8 @@ class _IncidentStatusPageState extends State<IncidentStatusPage> {
                                 Text(
                                   incident['title'],
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.w600),
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -208,17 +211,22 @@ class _IncidentStatusPageState extends State<IncidentStatusPage> {
                                   children: [
                                     Container(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 4),
+                                        horizontal: 8,
+                                        vertical: 4,
+                                      ),
                                       decoration: BoxDecoration(
-                                        color: statusColor(status)
-                                            .withOpacity(0.15),
+                                        color: statusColor(
+                                          status,
+                                        ).withOpacity(0.15),
                                         borderRadius: BorderRadius.circular(12),
                                       ),
                                       child: Row(
                                         children: [
-                                          Icon(Icons.circle,
-                                              size: 8,
-                                              color: statusColor(status)),
+                                          Icon(
+                                            Icons.circle,
+                                            size: 8,
+                                            color: statusColor(status),
+                                          ),
                                           const SizedBox(width: 4),
                                           Text(
                                             status,
@@ -234,17 +242,21 @@ class _IncidentStatusPageState extends State<IncidentStatusPage> {
                                     const SizedBox(width: 8),
                                     Row(
                                       children: [
-                                        const Icon(Icons.calendar_today,
-                                            size: 14, color: Colors.grey),
+                                        const Icon(
+                                          Icons.calendar_today,
+                                          size: 14,
+                                          color: Colors.grey,
+                                        ),
                                         const SizedBox(width: 4),
                                         Text(
                                           incident['date'],
                                           style: const TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.grey),
+                                            fontSize: 12,
+                                            color: Colors.grey,
+                                          ),
                                         ),
                                       ],
-                                    )
+                                    ),
                                   ],
                                 ),
                                 const SizedBox(height: 8),
@@ -255,21 +267,25 @@ class _IncidentStatusPageState extends State<IncidentStatusPage> {
                                     minHeight: 6,
                                     backgroundColor: Colors.grey.shade300,
                                     valueColor: AlwaysStoppedAnimation<Color>(
-                                        statusColor(status)),
+                                      statusColor(status),
+                                    ),
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
                           const SizedBox(width: 8),
-                          const Icon(Icons.arrow_forward_ios,
-                              size: 16, color: Colors.green),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 16,
+                            color: Colors.green,
+                          ),
                         ],
                       ),
                     );
                   },
                 ),
-              )
+              ),
             ],
           ),
         ),

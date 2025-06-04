@@ -1,5 +1,7 @@
 // Fichier : lib/pages/incident_detail_page.dart
 
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +9,9 @@ import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:smart_city_app/domain/dto/IncidentDto.dart';
+import 'package:smart_city_app/domain/dto/UserDto.dart';
 import 'package:smart_city_app/domain/dto/change_incident_status_request.dart';
 import 'package:smart_city_app/presentation/components/button_comp.dart';
 
@@ -16,6 +20,9 @@ import 'package:smart_city_app/presentation/components/button_comp.dart';
 // import 'package:your_app_name/models/incident.dart';
 
 import '../../../../fake_core/data/model/incident.dart';
+import '../../../core/constants/api.dart';
+import '../../../core/constants/route.dart';
+import '../../../domain/dto/AuthResponse.dart';
 import '../../providers/incident/incident_bloc.dart'; // Exemple : 'package:your_app_name/models/incident.dart';
 // import '../../components/IncidentCard.dart'; // Ce composant n'est pas utilisé directement dans cette page
 
@@ -137,6 +144,7 @@ class _IncidentDetailPageState extends State<IncidentDetailPage> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
+        print(ModalRoute.of(context)?.settings.name != RoutesPath.home.path);
         return AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
@@ -153,24 +161,30 @@ class _IncidentDetailPageState extends State<IncidentDetailPage> {
               child: const Text('Cancel', style: TextStyle(color: Colors.red)),
             ),
             BlocConsumer<IncidentBloc, IncidentState>(
+              listenWhen: (previous, current) {
+                return previous != current &&
+                    ModalRoute.of(context)?.settings.name !=
+                        RoutesPath.home.path;
+              },
+              // buildWhen: (previous, current) {
+              //   return previous != current &&
+              //       ModalRoute.of(context)?.settings.name ==
+              //           RoutesPath.incidentDetails.path.replaceAll('/', '');
+              // },
               listener: (context, state) {
                 state.maybeWhen(
                   orElse: () {},
                   updated: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
+                    scaffoldMessengerKey.currentState?.showSnackBar(
                       const SnackBar(
                         content: Text('Statut mis à jour avec succès'),
                       ),
                     );
+
                     setState(() {
                       _currentStatus = newStatus;
                       context.pop(); // Met à jour le statut
                     });
-                  },
-                  error: (error) {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text(error)));
                   },
                 );
               },
@@ -183,7 +197,8 @@ class _IncidentDetailPageState extends State<IncidentDetailPage> {
                         IncidentEvent.updateIncident(
                           incident: ChangeIncidentStatusRequest(
                             id: incident.id,
-                            status: newStatus,),
+                            status: newStatus,
+                          ),
                         ),
                       );
                     },
@@ -204,6 +219,8 @@ class _IncidentDetailPageState extends State<IncidentDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final user = AuthResponse.fromJson(jsonDecode(localStorage.getItem('user')!)).user;
+
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
@@ -354,6 +371,7 @@ class _IncidentDetailPageState extends State<IncidentDetailPage> {
                         SizedBox(width: 10),
 
                         // Bouton de changement de statut
+                        user?.profile == UserProfile.ADMIN.name ?
                         GestureDetector(
                           onTap: _showStatusChangeSheet,
                           child: Container(
@@ -382,7 +400,7 @@ class _IncidentDetailPageState extends State<IncidentDetailPage> {
                               ],
                             ),
                           ),
-                        ),
+                        ) : SizedBox.shrink(),
                       ],
                     ),
                   ),

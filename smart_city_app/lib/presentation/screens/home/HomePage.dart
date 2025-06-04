@@ -66,10 +66,25 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
 
   @override
   Widget build(BuildContext context) {
+    print( ModalRoute.of(context)?.settings.name);
+    print(ModalRoute.of(context)?.settings.name ==
+        RoutesPath.home.path);
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: BlocConsumer<IncidentBloc, IncidentState>(
+          listenWhen: (previous, current) {
+
+            return previous != current &&
+                ModalRoute.of(context)?.settings.name ==
+                    RoutesPath.home.path;
+          },
+          // buildWhen: (previous, current) {
+          //   return previous != current &&
+          //       ModalRoute.of(context)?.settings.name ==
+          //           RoutesPath.root.path.replaceAll('/', '');
+          // },
+
           listener: (context, state) {
             state.maybeWhen(
               orElse: () {},

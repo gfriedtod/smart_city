@@ -1,5 +1,6 @@
 package com.yans.smart_api.user_management.infrasctructure.persistences.adapters;
 
+import com.yans.smart_api.core.config.MessagePublisher;
 import com.yans.smart_api.core.dto.IncidentDto;
 import com.yans.smart_api.entity.Incident;
 import com.yans.smart_api.user_management.application.out.UIncidentOutput;
@@ -24,10 +25,14 @@ class UIncidentAdapter implements UIncidentOutput {
     
     private final UIncidentRepository incidentRepository;
     private final IncidentMapper incidentMapper;
-
-    UIncidentAdapter(UIncidentRepository incidentRepository, IncidentMapper incidentMapper) {
+    private static final String NOTIFICATION_PREFIX = "notification-" ;
+    private static final String ORDER_PREFIX = "order-" ;
+    private static final String NOTIFICATION_ALL_PREFIX = "general" ;
+    private final MessagePublisher messagePublisher;
+    UIncidentAdapter(UIncidentRepository incidentRepository, IncidentMapper incidentMapper, MessagePublisher messagePublisher) {
         this.incidentRepository = incidentRepository;
         this.incidentMapper = incidentMapper;
+        this.messagePublisher = messagePublisher;
     }
 
     /**
@@ -71,7 +76,13 @@ class UIncidentAdapter implements UIncidentOutput {
     @Override
     public IncidentDto createIncident(IncidentDto incident) {
         System.out.println(incident.getStatus());
-        return incidentMapper.toDto(incidentRepository.save(incidentMapper.toEntity(incident)));
+        var incidentDto = incidentMapper.toDto(incidentRepository.save(incidentMapper.toEntity(incident)));
+        try {
+            messagePublisher.sendMessage( "New incident created : "+incidentDto.getName(),NOTIFICATION_ALL_PREFIX);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return  incidentDto;
     }
 
     /**

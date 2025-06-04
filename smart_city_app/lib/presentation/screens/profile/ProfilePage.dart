@@ -1,4 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:localstorage/localstorage.dart';
+import 'package:smart_city_app/core/constants/route.dart';
+import 'package:smart_city_app/domain/dto/AuthResponse.dart';
 import 'package:smart_city_app/presentation/components/CustomTextField.dart';
 import 'package:smart_city_app/presentation/components/button_comp.dart';
 import 'package:smart_city_app/presentation/screens/onboarding/color.dart';
@@ -10,6 +16,9 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = AuthResponse.fromJson(jsonDecode(localStorage.getItem('user')!)).user;
+    _nameController.text = user?.username ?? '';
+    _emailController.text = user?.email ?? '';
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -67,7 +76,10 @@ class ProfilePage extends StatelessWidget {
             ButtonComp(
               width: double.infinity,
               title: 'update',
-              onPressed: () {},
+              onPressed: () {
+                localStorage.clear();
+                context.pushReplacement(RoutesPath.signin.path);
+              },
             ),
           ],
         ),

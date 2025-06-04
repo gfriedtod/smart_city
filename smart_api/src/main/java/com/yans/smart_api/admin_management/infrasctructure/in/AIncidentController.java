@@ -23,12 +23,12 @@ class AIncidentController {
 
     @PutMapping("/changeStatus")
     public ResponseEntity<?> changeIncidentStatus(@RequestBody ChangeIncidentStatusRequest request) {
-//         try {
+         try {
              incidentInput.changeStatus(request);
              return ResponseEntity.ok().build();
-//         } catch (Exception e) {
-//             log.error(e.getCause().getMessage());
-//             return ResponseEntity.badRequest().build();
-//         }
+         } catch (Exception e) {
+             log.error(e.getCause().getMessage());
+             return ResponseEntity.badRequest().build();
+         }
     }
 }

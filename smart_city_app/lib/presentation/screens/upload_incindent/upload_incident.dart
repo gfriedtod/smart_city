@@ -13,6 +13,7 @@ import 'package:smart_city_app/presentation/components/CustomTextField.dart';
 import 'package:smart_city_app/presentation/components/button_comp.dart';
 import 'package:smart_city_app/presentation/screens/onboarding/color.dart';
 
+import '../../../core/constants/api.dart';
 import '../../../domain/dto/AuthResponse.dart';
 import '../../../domain/dto/IncidentDto.dart';
 import '../../components/open_street_map_search_and_pick.dart';
@@ -135,7 +136,9 @@ class _ReportIncidentPageState extends State<ReportIncidentPage> {
                 const SizedBox(height: 6),
                 DropdownButtonFormField(
                   dropdownColor: Colors.white,
-                  decoration: const InputDecoration(border: OutlineInputBorder()),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                  ),
                   value: _selectedCategory,
                   hint: const Text("Sélectionner"),
                   onChanged: (value) {
@@ -236,17 +239,24 @@ class _ReportIncidentPageState extends State<ReportIncidentPage> {
 
                 BlocConsumer<IncidentBloc, IncidentState>(
                   listener: (context, state) {
-                    state.maybeWhen(
-                      orElse: () {},
-                      success: (){
-                       ScaffoldMessenger.of(
-                          context,
-                        ).showSnackBar(SnackBar(content: Text("Incident signalé avec succès")));
-                      } ,
-                      error: (message) => ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text(message))),
-                    );
+                    if (context.mounted) {
+                      state.maybeWhen(
+                        orElse: () {},
+                        success: () {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            if (context.mounted) {
+                              scaffoldMessengerKey.currentState?.showSnackBar(
+                                SnackBar(
+                                  content: Text("Incident signalé avec succès"),
+                                ),
+                              );
+                            }
+                          });
+                        },
+                        error: (message) => scaffoldMessengerKey.currentState
+                            ?.showSnackBar(SnackBar(content: Text(message))),
+                      );
+                    }
                   },
                   builder: (context, state) {
                     return state.maybeWhen(

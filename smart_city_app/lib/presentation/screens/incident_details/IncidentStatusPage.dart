@@ -1,13 +1,15 @@
 // Fichier : lib/pages/incident_status_page.dart
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_city_app/domain/dto/IncidentDto.dart';
 
 import '../../../fake_core/data/IncidentCard_data.dart';
 import '../../../fake_core/data/model/incident.dart';
 import '../../components/IncidentStatusCard.dart';
-import '../../components/StatusFilterChip.dart'; // Pour l'icône de retour
+import '../../components/StatusFilterChip.dart';
+import '../../providers/incident/incident_bloc.dart'; // Pour l'icône de retour
 
 class IncidentStatusPage extends StatefulWidget {
   const IncidentStatusPage({super.key});
@@ -19,14 +21,13 @@ class IncidentStatusPage extends StatefulWidget {
 class _IncidentStatusPageState extends State<IncidentStatusPage> {
   String _selectedFilter = 'All'; // Filtre sélectionné par défaut
   late List<IncidentDto> _filteredIncidents;
-  late List<IncidentDto> _allIncidents; // Copie de la liste originale
+  late List<IncidentDto> _allIncidents =[]; // Copie de la liste originale
 
   @override
   void initState() {
     super.initState();
-    _allIncidents = List.from(
-      IncidentArticlesData,
-    ); // Copie pour pouvoir supprimer des éléments
+
+    // Copie pour pouvoir supprimer des éléments
     _filterIncidents(); // Filtrer les incidents au démarrage
   }
 
@@ -76,6 +77,8 @@ class _IncidentStatusPageState extends State<IncidentStatusPage> {
 
   @override
   Widget build(BuildContext context) {
+    _allIncidents = context.watch<IncidentBloc>().incidents;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
