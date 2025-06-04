@@ -86,14 +86,16 @@ class _DisasterStatisticsPageState extends State<DisasterStatisticsPage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
-      if (!_tabController.indexIsChanging) { // S'assure que l'index est stable après le changement
+      if (!_tabController.indexIsChanging) {
+        // S'assure que l'index est stable après le changement
         setState(() {
           _currentTabIndex = _tabController.index;
         });
       }
-    });  }
+    });
+  }
 
   @override
   void dispose() {
@@ -182,6 +184,9 @@ class _DisasterStatisticsPageState extends State<DisasterStatisticsPage>
 
   @override
   Widget build(BuildContext context) {
+    final double tabBarViewHeight =
+        280.0; // 280 pour la carte, 350 pour les graphiques
+
     final List<String> categories = const [
       "Infrastructure",
       "Hygiène",
@@ -245,7 +250,6 @@ class _DisasterStatisticsPageState extends State<DisasterStatisticsPage>
                 unselectedLabelColor: Colors.black54,
                 tabs: const [
                   Tab(text: 'Graphique'),
-                  Tab(text: 'Répartition'),
                   Tab(text: 'Map'),
                 ],
               ),
@@ -254,13 +258,14 @@ class _DisasterStatisticsPageState extends State<DisasterStatisticsPage>
 
             // Contenu des onglets
             SizedBox(
-              height: 220, // Hauteur fixe pour les contenus des onglets
+              height:
+                  tabBarViewHeight, // Hauteur fixe pour les contenus des onglets
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  _buildLineChartTab(),
+                  Expanded(child: _buildLineChartTab()),
                   // Onglet pour le graphique linéaire
-                  _buildCircularChartTab(),
+                  // _buildCircularChartTab(),
                   // Onglet pour le graphique circulaire
                   Stack(
                     children: [
@@ -391,9 +396,7 @@ class _DisasterStatisticsPageState extends State<DisasterStatisticsPage>
                 // Désactive le défilement du ListView lui-même
                 itemCount: _disasterArticles.length,
                 itemBuilder: (context, index) {
-                  return IncidentcardListItem(
-                    incident: IncidentDto(),
-                  );
+                  return IncidentcardListItem(incident: IncidentDto());
                 },
               ),
             ),
@@ -469,9 +472,9 @@ class _DisasterStatisticsPageState extends State<DisasterStatisticsPage>
           ),
         ),
         const SizedBox(height: 20),
-        SizedBox(
-          height: 250,
-          child: Expanded(
+        Expanded(
+          child: SizedBox(
+            height: 280,
             child: Padding(
               padding: const EdgeInsets.only(right: 16.0, top: 16.0),
               child: LineChart(
