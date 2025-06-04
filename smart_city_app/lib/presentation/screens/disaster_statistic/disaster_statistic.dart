@@ -82,11 +82,18 @@ class _DisasterStatisticsPageState extends State<DisasterStatisticsPage>
       DateTime.now(); // Date par défaut pour le filtre date
   int _touchedSpotIndex = -1; // Pour gérer l'effet de survol sur le graphique
 
+  int _currentTabIndex = 0;
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-  }
+    _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(() {
+      if (!_tabController.indexIsChanging) { // S'assure que l'index est stable après le changement
+        setState(() {
+          _currentTabIndex = _tabController.index;
+        });
+      }
+    });  }
 
   @override
   void dispose() {
@@ -402,62 +409,64 @@ class _DisasterStatisticsPageState extends State<DisasterStatisticsPage>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Filtres (1D, 1W, 4M, 8M, All, Date)
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _buildFilterButton('1D'),
-            _buildFilterButton('1W'),
-            _buildFilterButton('4M'),
-            _buildFilterButton('8M'),
-            _buildFilterButton('All'),
-            GestureDetector(
-              onTap: () async {
-                final DateTime? picked = await showDatePicker(
-                  context: context,
-                  initialDate: _selectedDate,
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2025),
-                );
-                if (picked != null && picked != _selectedDate) {
-                  setState(() {
-                    _selectedDate = picked;
-                  });
-                }
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.calendar_today,
-                      size: 18,
-                      color: Colors.black87,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      DateFormat('MMM yyyy').format(_selectedDate),
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
+        FittedBox(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildFilterButton('1D'),
+              _buildFilterButton('1W'),
+              _buildFilterButton('4M'),
+              _buildFilterButton('8M'),
+              _buildFilterButton('All'),
+              GestureDetector(
+                onTap: () async {
+                  final DateTime? picked = await showDatePicker(
+                    context: context,
+                    initialDate: _selectedDate,
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2025),
+                  );
+                  if (picked != null && picked != _selectedDate) {
+                    setState(() {
+                      _selectedDate = picked;
+                    });
+                  }
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.calendar_today,
+                        size: 18,
+                        color: Colors.black87,
                       ),
-                    ),
-                    const Icon(
-                      Icons.arrow_drop_down,
-                      size: 24,
-                      color: Colors.black87,
-                    ),
-                  ],
+                      const SizedBox(width: 8),
+                      Text(
+                        DateFormat('MMM yyyy').format(_selectedDate),
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const Icon(
+                        Icons.arrow_drop_down,
+                        size: 24,
+                        color: Colors.black87,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         const SizedBox(height: 20),
         SizedBox(
