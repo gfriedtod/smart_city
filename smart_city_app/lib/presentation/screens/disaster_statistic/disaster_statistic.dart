@@ -59,6 +59,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart'; // Pour la date
+import 'package:smart_city_app/domain/dto/IncidentDto.dart';
 
 import '../../../fake_core/data/IncidentCard_data.dart';
 import '../../../fake_core/data/model/incident.dart';
@@ -309,7 +310,7 @@ class _DisasterStatisticsPageState extends State<DisasterStatisticsPage>
                 itemCount: _disasterArticles.length,
                 itemBuilder: (context, index) {
                   return IncidentcardListItem(
-                    incident: _disasterArticles[index],
+                    incident: IncidentDto(),
                   );
                 },
               ),

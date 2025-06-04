@@ -7,6 +7,6 @@ class IncidentEvent with _$IncidentEvent {
   const factory IncidentEvent.getIncidents() = _GetIncidents;
 
   const factory IncidentEvent.createIncident({
-    required Incident incident,
+    required IncidentDto incident, required File image
   }) = _CreateIncident;
 }

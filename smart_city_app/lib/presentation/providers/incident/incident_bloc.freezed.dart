@@ -21,19 +21,19 @@ mixin _$IncidentEvent {
   TResult when<TResult extends Object?>({
     required TResult Function() started,
     required TResult Function() getIncidents,
-    required TResult Function(Incident incident) createIncident,
+    required TResult Function(IncidentDto incident, File image) createIncident,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
     TResult? Function()? getIncidents,
-    TResult? Function(Incident incident)? createIncident,
+    TResult? Function(IncidentDto incident, File image)? createIncident,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
     TResult Function()? getIncidents,
-    TResult Function(Incident incident)? createIncident,
+    TResult Function(IncidentDto incident, File image)? createIncident,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -124,7 +124,7 @@ class _$StartedImpl implements _Started {
   TResult when<TResult extends Object?>({
     required TResult Function() started,
     required TResult Function() getIncidents,
-    required TResult Function(Incident incident) createIncident,
+    required TResult Function(IncidentDto incident, File image) createIncident,
   }) {
     return started();
   }
@@ -134,7 +134,7 @@ class _$StartedImpl implements _Started {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
     TResult? Function()? getIncidents,
-    TResult? Function(Incident incident)? createIncident,
+    TResult? Function(IncidentDto incident, File image)? createIncident,
   }) {
     return started?.call();
   }
@@ -144,7 +144,7 @@ class _$StartedImpl implements _Started {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
     TResult Function()? getIncidents,
-    TResult Function(Incident incident)? createIncident,
+    TResult Function(IncidentDto incident, File image)? createIncident,
     required TResult orElse(),
   }) {
     if (started != null) {
@@ -237,7 +237,7 @@ class _$GetIncidentsImpl implements _GetIncidents {
   TResult when<TResult extends Object?>({
     required TResult Function() started,
     required TResult Function() getIncidents,
-    required TResult Function(Incident incident) createIncident,
+    required TResult Function(IncidentDto incident, File image) createIncident,
   }) {
     return getIncidents();
   }
@@ -247,7 +247,7 @@ class _$GetIncidentsImpl implements _GetIncidents {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
     TResult? Function()? getIncidents,
-    TResult? Function(Incident incident)? createIncident,
+    TResult? Function(IncidentDto incident, File image)? createIncident,
   }) {
     return getIncidents?.call();
   }
@@ -257,7 +257,7 @@ class _$GetIncidentsImpl implements _GetIncidents {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
     TResult Function()? getIncidents,
-    TResult Function(Incident incident)? createIncident,
+    TResult Function(IncidentDto incident, File image)? createIncident,
     required TResult orElse(),
   }) {
     if (getIncidents != null) {
@@ -312,7 +312,7 @@ abstract class _$$CreateIncidentImplCopyWith<$Res> {
     $Res Function(_$CreateIncidentImpl) then,
   ) = __$$CreateIncidentImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Incident incident});
+  $Res call({IncidentDto incident, File image});
 }
 
 /// @nodoc
@@ -328,13 +328,17 @@ class __$$CreateIncidentImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? incident = null}) {
+  $Res call({Object? incident = null, Object? image = null}) {
     return _then(
       _$CreateIncidentImpl(
         incident: null == incident
             ? _value.incident
             : incident // ignore: cast_nullable_to_non_nullable
-                  as Incident,
+                  as IncidentDto,
+        image: null == image
+            ? _value.image
+            : image // ignore: cast_nullable_to_non_nullable
+                  as File,
       ),
     );
   }
@@ -343,14 +347,16 @@ class __$$CreateIncidentImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$CreateIncidentImpl implements _CreateIncident {
-  const _$CreateIncidentImpl({required this.incident});
+  const _$CreateIncidentImpl({required this.incident, required this.image});
 
   @override
-  final Incident incident;
+  final IncidentDto incident;
+  @override
+  final File image;
 
   @override
   String toString() {
-    return 'IncidentEvent.createIncident(incident: $incident)';
+    return 'IncidentEvent.createIncident(incident: $incident, image: $image)';
   }
 
   @override
@@ -359,11 +365,12 @@ class _$CreateIncidentImpl implements _CreateIncident {
         (other.runtimeType == runtimeType &&
             other is _$CreateIncidentImpl &&
             (identical(other.incident, incident) ||
-                other.incident == incident));
+                other.incident == incident) &&
+            (identical(other.image, image) || other.image == image));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, incident);
+  int get hashCode => Object.hash(runtimeType, incident, image);
 
   /// Create a copy of IncidentEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -381,9 +388,9 @@ class _$CreateIncidentImpl implements _CreateIncident {
   TResult when<TResult extends Object?>({
     required TResult Function() started,
     required TResult Function() getIncidents,
-    required TResult Function(Incident incident) createIncident,
+    required TResult Function(IncidentDto incident, File image) createIncident,
   }) {
-    return createIncident(incident);
+    return createIncident(incident, image);
   }
 
   @override
@@ -391,9 +398,9 @@ class _$CreateIncidentImpl implements _CreateIncident {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
     TResult? Function()? getIncidents,
-    TResult? Function(Incident incident)? createIncident,
+    TResult? Function(IncidentDto incident, File image)? createIncident,
   }) {
-    return createIncident?.call(incident);
+    return createIncident?.call(incident, image);
   }
 
   @override
@@ -401,11 +408,11 @@ class _$CreateIncidentImpl implements _CreateIncident {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
     TResult Function()? getIncidents,
-    TResult Function(Incident incident)? createIncident,
+    TResult Function(IncidentDto incident, File image)? createIncident,
     required TResult orElse(),
   }) {
     if (createIncident != null) {
-      return createIncident(incident);
+      return createIncident(incident, image);
     }
     return orElse();
   }
@@ -446,10 +453,13 @@ class _$CreateIncidentImpl implements _CreateIncident {
 }
 
 abstract class _CreateIncident implements IncidentEvent {
-  const factory _CreateIncident({required final Incident incident}) =
-      _$CreateIncidentImpl;
+  const factory _CreateIncident({
+    required final IncidentDto incident,
+    required final File image,
+  }) = _$CreateIncidentImpl;
 
-  Incident get incident;
+  IncidentDto get incident;
+  File get image;
 
   /// Create a copy of IncidentEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -464,7 +474,7 @@ mixin _$IncidentState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Incident> incidents) loaded,
+    required TResult Function(List<IncidentDto> incidents) loaded,
     required TResult Function() empty,
     required TResult Function() success,
     required TResult Function(String message) error,
@@ -473,7 +483,7 @@ mixin _$IncidentState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Incident> incidents)? loaded,
+    TResult? Function(List<IncidentDto> incidents)? loaded,
     TResult? Function()? empty,
     TResult? Function()? success,
     TResult? Function(String message)? error,
@@ -482,7 +492,7 @@ mixin _$IncidentState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Incident> incidents)? loaded,
+    TResult Function(List<IncidentDto> incidents)? loaded,
     TResult Function()? empty,
     TResult Function()? success,
     TResult Function(String message)? error,
@@ -585,7 +595,7 @@ class _$InitialImpl implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Incident> incidents) loaded,
+    required TResult Function(List<IncidentDto> incidents) loaded,
     required TResult Function() empty,
     required TResult Function() success,
     required TResult Function(String message) error,
@@ -598,7 +608,7 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Incident> incidents)? loaded,
+    TResult? Function(List<IncidentDto> incidents)? loaded,
     TResult? Function()? empty,
     TResult? Function()? success,
     TResult? Function(String message)? error,
@@ -611,7 +621,7 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Incident> incidents)? loaded,
+    TResult Function(List<IncidentDto> incidents)? loaded,
     TResult Function()? empty,
     TResult Function()? success,
     TResult Function(String message)? error,
@@ -716,7 +726,7 @@ class _$LoadingImpl implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Incident> incidents) loaded,
+    required TResult Function(List<IncidentDto> incidents) loaded,
     required TResult Function() empty,
     required TResult Function() success,
     required TResult Function(String message) error,
@@ -729,7 +739,7 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Incident> incidents)? loaded,
+    TResult? Function(List<IncidentDto> incidents)? loaded,
     TResult? Function()? empty,
     TResult? Function()? success,
     TResult? Function(String message)? error,
@@ -742,7 +752,7 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Incident> incidents)? loaded,
+    TResult Function(List<IncidentDto> incidents)? loaded,
     TResult Function()? empty,
     TResult Function()? success,
     TResult Function(String message)? error,
@@ -809,7 +819,7 @@ abstract class _$$LoadedImplCopyWith<$Res> {
     $Res Function(_$LoadedImpl) then,
   ) = __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<Incident> incidents});
+  $Res call({List<IncidentDto> incidents});
 }
 
 /// @nodoc
@@ -831,7 +841,7 @@ class __$$LoadedImplCopyWithImpl<$Res>
         null == incidents
             ? _value._incidents
             : incidents // ignore: cast_nullable_to_non_nullable
-                  as List<Incident>,
+                  as List<IncidentDto>,
       ),
     );
   }
@@ -840,11 +850,12 @@ class __$$LoadedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LoadedImpl implements _Loaded {
-  const _$LoadedImpl(final List<Incident> incidents) : _incidents = incidents;
+  const _$LoadedImpl(final List<IncidentDto> incidents)
+    : _incidents = incidents;
 
-  final List<Incident> _incidents;
+  final List<IncidentDto> _incidents;
   @override
-  List<Incident> get incidents {
+  List<IncidentDto> get incidents {
     if (_incidents is EqualUnmodifiableListView) return _incidents;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_incidents);
@@ -883,7 +894,7 @@ class _$LoadedImpl implements _Loaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Incident> incidents) loaded,
+    required TResult Function(List<IncidentDto> incidents) loaded,
     required TResult Function() empty,
     required TResult Function() success,
     required TResult Function(String message) error,
@@ -896,7 +907,7 @@ class _$LoadedImpl implements _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Incident> incidents)? loaded,
+    TResult? Function(List<IncidentDto> incidents)? loaded,
     TResult? Function()? empty,
     TResult? Function()? success,
     TResult? Function(String message)? error,
@@ -909,7 +920,7 @@ class _$LoadedImpl implements _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Incident> incidents)? loaded,
+    TResult Function(List<IncidentDto> incidents)? loaded,
     TResult Function()? empty,
     TResult Function()? success,
     TResult Function(String message)? error,
@@ -966,9 +977,9 @@ class _$LoadedImpl implements _Loaded {
 }
 
 abstract class _Loaded implements IncidentState {
-  const factory _Loaded(final List<Incident> incidents) = _$LoadedImpl;
+  const factory _Loaded(final List<IncidentDto> incidents) = _$LoadedImpl;
 
-  List<Incident> get incidents;
+  List<IncidentDto> get incidents;
 
   /// Create a copy of IncidentState
   /// with the given fields replaced by the non-null parameter values.
@@ -1022,7 +1033,7 @@ class _$EmptyImpl implements _Empty {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Incident> incidents) loaded,
+    required TResult Function(List<IncidentDto> incidents) loaded,
     required TResult Function() empty,
     required TResult Function() success,
     required TResult Function(String message) error,
@@ -1035,7 +1046,7 @@ class _$EmptyImpl implements _Empty {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Incident> incidents)? loaded,
+    TResult? Function(List<IncidentDto> incidents)? loaded,
     TResult? Function()? empty,
     TResult? Function()? success,
     TResult? Function(String message)? error,
@@ -1048,7 +1059,7 @@ class _$EmptyImpl implements _Empty {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Incident> incidents)? loaded,
+    TResult Function(List<IncidentDto> incidents)? loaded,
     TResult Function()? empty,
     TResult Function()? success,
     TResult Function(String message)? error,
@@ -1153,7 +1164,7 @@ class _$SuccessImpl implements _Success {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Incident> incidents) loaded,
+    required TResult Function(List<IncidentDto> incidents) loaded,
     required TResult Function() empty,
     required TResult Function() success,
     required TResult Function(String message) error,
@@ -1166,7 +1177,7 @@ class _$SuccessImpl implements _Success {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Incident> incidents)? loaded,
+    TResult? Function(List<IncidentDto> incidents)? loaded,
     TResult? Function()? empty,
     TResult? Function()? success,
     TResult? Function(String message)? error,
@@ -1179,7 +1190,7 @@ class _$SuccessImpl implements _Success {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Incident> incidents)? loaded,
+    TResult Function(List<IncidentDto> incidents)? loaded,
     TResult Function()? empty,
     TResult Function()? success,
     TResult Function(String message)? error,
@@ -1311,7 +1322,7 @@ class _$ErrorImpl implements _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Incident> incidents) loaded,
+    required TResult Function(List<IncidentDto> incidents) loaded,
     required TResult Function() empty,
     required TResult Function() success,
     required TResult Function(String message) error,
@@ -1324,7 +1335,7 @@ class _$ErrorImpl implements _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Incident> incidents)? loaded,
+    TResult? Function(List<IncidentDto> incidents)? loaded,
     TResult? Function()? empty,
     TResult? Function()? success,
     TResult? Function(String message)? error,
@@ -1337,7 +1348,7 @@ class _$ErrorImpl implements _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Incident> incidents)? loaded,
+    TResult Function(List<IncidentDto> incidents)? loaded,
     TResult Function()? empty,
     TResult Function()? success,
     TResult Function(String message)? error,

@@ -1,6 +1,9 @@
-import 'package:smart_city_app/fake_core/data/model/incident.dart';
+import 'package:smart_city_app/domain/dto/CategoryDto.dart';
+
+import '../dto/IncidentDto.dart';
 
 abstract class IIncident {
-  Future<List<Incident>> getIncidents();
-  Future<void> addIncident(Incident incident);
+  Future<List<IncidentDto>> getIncidents();
+  Future<void> addIncident(IncidentDto incident);
+  Future<List<CategoryDto>> getAllCategory();
 }

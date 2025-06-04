@@ -38,4 +38,22 @@ class Incident {
       'deaths': deaths,
     };
   }
+
+  Incident copyWith({
+    String? image,
+    String? title,
+    String? location,
+    DateTime? date,
+    String? timeAgo,
+    int? deaths,
+  }) {
+    return Incident(
+      image: image ?? this.image,
+      title: title ?? this.title,
+      location: location ?? this.location,
+      date: date ?? this.date,
+      timeAgo: timeAgo ?? this.timeAgo,
+      deaths: deaths ?? this.deaths,
+    );
+  }
 }

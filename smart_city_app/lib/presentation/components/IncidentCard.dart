@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
+import '../../domain/dto/IncidentDto.dart';
 import '../../fake_core/data/model/incident.dart';
 import '../screens/onboarding/color.dart';
 
 class IncidentcardListItem extends StatelessWidget {
-  final Incident incident; // Le type est maintenant 'incident'
+  final IncidentDto incident; // Le type est maintenant 'incident'
 
   const IncidentcardListItem({super.key, required this.incident});
 
@@ -35,8 +36,8 @@ class IncidentcardListItem extends StatelessWidget {
           // Image à gauche
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Image.asset(
-              incident.image,
+            child: Image.network(
+              incident.image ?? 'https://ifthknoghckblnvnkbld.supabase.co/storage/v1/object/public/avatars/56a14781-1822-4a0c-8fc8-ac985405f2071748999119692.png',
               // Accès direct à la propriété 'image' de l'objet incident
               width: 110,
               height: 110,
@@ -50,7 +51,7 @@ class IncidentcardListItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  incident.title, // Accès direct à la propriété 'title'
+                  incident.name ?? 'N/A', // Accès direct à la propriété 'title'
                   style: const TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
@@ -73,7 +74,7 @@ class IncidentcardListItem extends StatelessWidget {
                     const SizedBox(width: 5),
                     Expanded(
                       child: Text(
-                        incident.location,
+                        incident.address ?? 'N/A',
                         // Accès direct à la propriété 'location'
                         style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                         maxLines: 1,
@@ -92,42 +93,12 @@ class IncidentcardListItem extends StatelessWidget {
                     ),
                     const SizedBox(width: 5),
                     Text(
-                      DateFormat('dd MMM,yyyy').format(incident.date),
+                      DateFormat('dd MMM,yyyy').format(incident.createdAt ?? DateTime.now()),
                       // Accès direct à la propriété 'date'
                       style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                     ),
                     const SizedBox(width: 10),
-                    // Affichage conditionnel de timeAgo si présent dans les données
-                    if (incident.timeAgo != null) ...[
-                      FaIcon(
-                        FontAwesomeIcons.hourglassHalf,
-                        size: 14,
-                        color: Colors.grey[600],
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        incident.timeAgo!,
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                      ),
-                    ],
-                    // Affichage conditionnel des décès si présent dans les données
-                    if (incident.deaths != null) ...[
-                      const SizedBox(width: 10),
-                      FaIcon(
-                        FontAwesomeIcons.skull,
-                        size: 14,
-                        color: Colors.red[700],
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        '${incident.deaths} Deaths',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.red[700],
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+
                   ],
                 ),
               ],

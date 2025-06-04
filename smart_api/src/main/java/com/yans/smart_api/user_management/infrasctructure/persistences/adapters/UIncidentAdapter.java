@@ -70,6 +70,7 @@ class UIncidentAdapter implements UIncidentOutput {
      */
     @Override
     public IncidentDto createIncident(IncidentDto incident) {
+        System.out.println(incident.getStatus());
         return incidentMapper.toDto(incidentRepository.save(incidentMapper.toEntity(incident)));
     }
 

@@ -49,9 +49,12 @@ public class Incident {
     @JoinColumn(name = "category_id")
     private Category category;
 
-
-    @ColumnDefault("'submit'")
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("'SUBMIT'")
     @Column(name = "status", columnDefinition = "status not null")
     private IncidentStatus status;
+
+    @Column(name = "address")
+    private String address;
 
 }
