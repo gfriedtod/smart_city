@@ -22,18 +22,22 @@ mixin _$IncidentEvent {
     required TResult Function() started,
     required TResult Function() getIncidents,
     required TResult Function(IncidentDto incident, File image) createIncident,
+    required TResult Function(ChangeIncidentStatusRequest incident)
+    updateIncident,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
     TResult? Function()? getIncidents,
     TResult? Function(IncidentDto incident, File image)? createIncident,
+    TResult? Function(ChangeIncidentStatusRequest incident)? updateIncident,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
     TResult Function()? getIncidents,
     TResult Function(IncidentDto incident, File image)? createIncident,
+    TResult Function(ChangeIncidentStatusRequest incident)? updateIncident,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -41,18 +45,21 @@ mixin _$IncidentEvent {
     required TResult Function(_Started value) started,
     required TResult Function(_GetIncidents value) getIncidents,
     required TResult Function(_CreateIncident value) createIncident,
+    required TResult Function(_UpdateIncident value) updateIncident,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Started value)? started,
     TResult? Function(_GetIncidents value)? getIncidents,
     TResult? Function(_CreateIncident value)? createIncident,
+    TResult? Function(_UpdateIncident value)? updateIncident,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? started,
     TResult Function(_GetIncidents value)? getIncidents,
     TResult Function(_CreateIncident value)? createIncident,
+    TResult Function(_UpdateIncident value)? updateIncident,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
@@ -125,6 +132,8 @@ class _$StartedImpl implements _Started {
     required TResult Function() started,
     required TResult Function() getIncidents,
     required TResult Function(IncidentDto incident, File image) createIncident,
+    required TResult Function(ChangeIncidentStatusRequest incident)
+    updateIncident,
   }) {
     return started();
   }
@@ -135,6 +144,7 @@ class _$StartedImpl implements _Started {
     TResult? Function()? started,
     TResult? Function()? getIncidents,
     TResult? Function(IncidentDto incident, File image)? createIncident,
+    TResult? Function(ChangeIncidentStatusRequest incident)? updateIncident,
   }) {
     return started?.call();
   }
@@ -145,6 +155,7 @@ class _$StartedImpl implements _Started {
     TResult Function()? started,
     TResult Function()? getIncidents,
     TResult Function(IncidentDto incident, File image)? createIncident,
+    TResult Function(ChangeIncidentStatusRequest incident)? updateIncident,
     required TResult orElse(),
   }) {
     if (started != null) {
@@ -159,6 +170,7 @@ class _$StartedImpl implements _Started {
     required TResult Function(_Started value) started,
     required TResult Function(_GetIncidents value) getIncidents,
     required TResult Function(_CreateIncident value) createIncident,
+    required TResult Function(_UpdateIncident value) updateIncident,
   }) {
     return started(this);
   }
@@ -169,6 +181,7 @@ class _$StartedImpl implements _Started {
     TResult? Function(_Started value)? started,
     TResult? Function(_GetIncidents value)? getIncidents,
     TResult? Function(_CreateIncident value)? createIncident,
+    TResult? Function(_UpdateIncident value)? updateIncident,
   }) {
     return started?.call(this);
   }
@@ -179,6 +192,7 @@ class _$StartedImpl implements _Started {
     TResult Function(_Started value)? started,
     TResult Function(_GetIncidents value)? getIncidents,
     TResult Function(_CreateIncident value)? createIncident,
+    TResult Function(_UpdateIncident value)? updateIncident,
     required TResult orElse(),
   }) {
     if (started != null) {
@@ -238,6 +252,8 @@ class _$GetIncidentsImpl implements _GetIncidents {
     required TResult Function() started,
     required TResult Function() getIncidents,
     required TResult Function(IncidentDto incident, File image) createIncident,
+    required TResult Function(ChangeIncidentStatusRequest incident)
+    updateIncident,
   }) {
     return getIncidents();
   }
@@ -248,6 +264,7 @@ class _$GetIncidentsImpl implements _GetIncidents {
     TResult? Function()? started,
     TResult? Function()? getIncidents,
     TResult? Function(IncidentDto incident, File image)? createIncident,
+    TResult? Function(ChangeIncidentStatusRequest incident)? updateIncident,
   }) {
     return getIncidents?.call();
   }
@@ -258,6 +275,7 @@ class _$GetIncidentsImpl implements _GetIncidents {
     TResult Function()? started,
     TResult Function()? getIncidents,
     TResult Function(IncidentDto incident, File image)? createIncident,
+    TResult Function(ChangeIncidentStatusRequest incident)? updateIncident,
     required TResult orElse(),
   }) {
     if (getIncidents != null) {
@@ -272,6 +290,7 @@ class _$GetIncidentsImpl implements _GetIncidents {
     required TResult Function(_Started value) started,
     required TResult Function(_GetIncidents value) getIncidents,
     required TResult Function(_CreateIncident value) createIncident,
+    required TResult Function(_UpdateIncident value) updateIncident,
   }) {
     return getIncidents(this);
   }
@@ -282,6 +301,7 @@ class _$GetIncidentsImpl implements _GetIncidents {
     TResult? Function(_Started value)? started,
     TResult? Function(_GetIncidents value)? getIncidents,
     TResult? Function(_CreateIncident value)? createIncident,
+    TResult? Function(_UpdateIncident value)? updateIncident,
   }) {
     return getIncidents?.call(this);
   }
@@ -292,6 +312,7 @@ class _$GetIncidentsImpl implements _GetIncidents {
     TResult Function(_Started value)? started,
     TResult Function(_GetIncidents value)? getIncidents,
     TResult Function(_CreateIncident value)? createIncident,
+    TResult Function(_UpdateIncident value)? updateIncident,
     required TResult orElse(),
   }) {
     if (getIncidents != null) {
@@ -389,6 +410,8 @@ class _$CreateIncidentImpl implements _CreateIncident {
     required TResult Function() started,
     required TResult Function() getIncidents,
     required TResult Function(IncidentDto incident, File image) createIncident,
+    required TResult Function(ChangeIncidentStatusRequest incident)
+    updateIncident,
   }) {
     return createIncident(incident, image);
   }
@@ -399,6 +422,7 @@ class _$CreateIncidentImpl implements _CreateIncident {
     TResult? Function()? started,
     TResult? Function()? getIncidents,
     TResult? Function(IncidentDto incident, File image)? createIncident,
+    TResult? Function(ChangeIncidentStatusRequest incident)? updateIncident,
   }) {
     return createIncident?.call(incident, image);
   }
@@ -409,6 +433,7 @@ class _$CreateIncidentImpl implements _CreateIncident {
     TResult Function()? started,
     TResult Function()? getIncidents,
     TResult Function(IncidentDto incident, File image)? createIncident,
+    TResult Function(ChangeIncidentStatusRequest incident)? updateIncident,
     required TResult orElse(),
   }) {
     if (createIncident != null) {
@@ -423,6 +448,7 @@ class _$CreateIncidentImpl implements _CreateIncident {
     required TResult Function(_Started value) started,
     required TResult Function(_GetIncidents value) getIncidents,
     required TResult Function(_CreateIncident value) createIncident,
+    required TResult Function(_UpdateIncident value) updateIncident,
   }) {
     return createIncident(this);
   }
@@ -433,6 +459,7 @@ class _$CreateIncidentImpl implements _CreateIncident {
     TResult? Function(_Started value)? started,
     TResult? Function(_GetIncidents value)? getIncidents,
     TResult? Function(_CreateIncident value)? createIncident,
+    TResult? Function(_UpdateIncident value)? updateIncident,
   }) {
     return createIncident?.call(this);
   }
@@ -443,6 +470,7 @@ class _$CreateIncidentImpl implements _CreateIncident {
     TResult Function(_Started value)? started,
     TResult Function(_GetIncidents value)? getIncidents,
     TResult Function(_CreateIncident value)? createIncident,
+    TResult Function(_UpdateIncident value)? updateIncident,
     required TResult orElse(),
   }) {
     if (createIncident != null) {
@@ -469,6 +497,167 @@ abstract class _CreateIncident implements IncidentEvent {
 }
 
 /// @nodoc
+abstract class _$$UpdateIncidentImplCopyWith<$Res> {
+  factory _$$UpdateIncidentImplCopyWith(
+    _$UpdateIncidentImpl value,
+    $Res Function(_$UpdateIncidentImpl) then,
+  ) = __$$UpdateIncidentImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({ChangeIncidentStatusRequest incident});
+}
+
+/// @nodoc
+class __$$UpdateIncidentImplCopyWithImpl<$Res>
+    extends _$IncidentEventCopyWithImpl<$Res, _$UpdateIncidentImpl>
+    implements _$$UpdateIncidentImplCopyWith<$Res> {
+  __$$UpdateIncidentImplCopyWithImpl(
+    _$UpdateIncidentImpl _value,
+    $Res Function(_$UpdateIncidentImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of IncidentEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? incident = null}) {
+    return _then(
+      _$UpdateIncidentImpl(
+        incident: null == incident
+            ? _value.incident
+            : incident // ignore: cast_nullable_to_non_nullable
+                  as ChangeIncidentStatusRequest,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$UpdateIncidentImpl implements _UpdateIncident {
+  const _$UpdateIncidentImpl({required this.incident});
+
+  @override
+  final ChangeIncidentStatusRequest incident;
+
+  @override
+  String toString() {
+    return 'IncidentEvent.updateIncident(incident: $incident)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$UpdateIncidentImpl &&
+            (identical(other.incident, incident) ||
+                other.incident == incident));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, incident);
+
+  /// Create a copy of IncidentEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$UpdateIncidentImplCopyWith<_$UpdateIncidentImpl> get copyWith =>
+      __$$UpdateIncidentImplCopyWithImpl<_$UpdateIncidentImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() started,
+    required TResult Function() getIncidents,
+    required TResult Function(IncidentDto incident, File image) createIncident,
+    required TResult Function(ChangeIncidentStatusRequest incident)
+    updateIncident,
+  }) {
+    return updateIncident(incident);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? started,
+    TResult? Function()? getIncidents,
+    TResult? Function(IncidentDto incident, File image)? createIncident,
+    TResult? Function(ChangeIncidentStatusRequest incident)? updateIncident,
+  }) {
+    return updateIncident?.call(incident);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? started,
+    TResult Function()? getIncidents,
+    TResult Function(IncidentDto incident, File image)? createIncident,
+    TResult Function(ChangeIncidentStatusRequest incident)? updateIncident,
+    required TResult orElse(),
+  }) {
+    if (updateIncident != null) {
+      return updateIncident(incident);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Started value) started,
+    required TResult Function(_GetIncidents value) getIncidents,
+    required TResult Function(_CreateIncident value) createIncident,
+    required TResult Function(_UpdateIncident value) updateIncident,
+  }) {
+    return updateIncident(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Started value)? started,
+    TResult? Function(_GetIncidents value)? getIncidents,
+    TResult? Function(_CreateIncident value)? createIncident,
+    TResult? Function(_UpdateIncident value)? updateIncident,
+  }) {
+    return updateIncident?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Started value)? started,
+    TResult Function(_GetIncidents value)? getIncidents,
+    TResult Function(_CreateIncident value)? createIncident,
+    TResult Function(_UpdateIncident value)? updateIncident,
+    required TResult orElse(),
+  }) {
+    if (updateIncident != null) {
+      return updateIncident(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _UpdateIncident implements IncidentEvent {
+  const factory _UpdateIncident({
+    required final ChangeIncidentStatusRequest incident,
+  }) = _$UpdateIncidentImpl;
+
+  ChangeIncidentStatusRequest get incident;
+
+  /// Create a copy of IncidentEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$UpdateIncidentImplCopyWith<_$UpdateIncidentImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$IncidentState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
@@ -478,6 +667,7 @@ mixin _$IncidentState {
     required TResult Function() empty,
     required TResult Function() success,
     required TResult Function(String message) error,
+    required TResult Function() updated,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
@@ -487,6 +677,7 @@ mixin _$IncidentState {
     TResult? Function()? empty,
     TResult? Function()? success,
     TResult? Function(String message)? error,
+    TResult? Function()? updated,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
@@ -496,6 +687,7 @@ mixin _$IncidentState {
     TResult Function()? empty,
     TResult Function()? success,
     TResult Function(String message)? error,
+    TResult Function()? updated,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -506,6 +698,7 @@ mixin _$IncidentState {
     required TResult Function(_Empty value) empty,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
+    required TResult Function(_Updated value) updated,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
@@ -515,6 +708,7 @@ mixin _$IncidentState {
     TResult? Function(_Empty value)? empty,
     TResult? Function(_Success value)? success,
     TResult? Function(_Error value)? error,
+    TResult? Function(_Updated value)? updated,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
@@ -524,6 +718,7 @@ mixin _$IncidentState {
     TResult Function(_Empty value)? empty,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
+    TResult Function(_Updated value)? updated,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
@@ -599,6 +794,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function() empty,
     required TResult Function() success,
     required TResult Function(String message) error,
+    required TResult Function() updated,
   }) {
     return initial();
   }
@@ -612,6 +808,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function()? empty,
     TResult? Function()? success,
     TResult? Function(String message)? error,
+    TResult? Function()? updated,
   }) {
     return initial?.call();
   }
@@ -625,6 +822,7 @@ class _$InitialImpl implements _Initial {
     TResult Function()? empty,
     TResult Function()? success,
     TResult Function(String message)? error,
+    TResult Function()? updated,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -642,6 +840,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function(_Empty value) empty,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
+    required TResult Function(_Updated value) updated,
   }) {
     return initial(this);
   }
@@ -655,6 +854,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function(_Empty value)? empty,
     TResult? Function(_Success value)? success,
     TResult? Function(_Error value)? error,
+    TResult? Function(_Updated value)? updated,
   }) {
     return initial?.call(this);
   }
@@ -668,6 +868,7 @@ class _$InitialImpl implements _Initial {
     TResult Function(_Empty value)? empty,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
+    TResult Function(_Updated value)? updated,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -730,6 +931,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function() empty,
     required TResult Function() success,
     required TResult Function(String message) error,
+    required TResult Function() updated,
   }) {
     return loading();
   }
@@ -743,6 +945,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function()? empty,
     TResult? Function()? success,
     TResult? Function(String message)? error,
+    TResult? Function()? updated,
   }) {
     return loading?.call();
   }
@@ -756,6 +959,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function()? empty,
     TResult Function()? success,
     TResult Function(String message)? error,
+    TResult Function()? updated,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -773,6 +977,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function(_Empty value) empty,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
+    required TResult Function(_Updated value) updated,
   }) {
     return loading(this);
   }
@@ -786,6 +991,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function(_Empty value)? empty,
     TResult? Function(_Success value)? success,
     TResult? Function(_Error value)? error,
+    TResult? Function(_Updated value)? updated,
   }) {
     return loading?.call(this);
   }
@@ -799,6 +1005,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function(_Empty value)? empty,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
+    TResult Function(_Updated value)? updated,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -898,6 +1105,7 @@ class _$LoadedImpl implements _Loaded {
     required TResult Function() empty,
     required TResult Function() success,
     required TResult Function(String message) error,
+    required TResult Function() updated,
   }) {
     return loaded(incidents);
   }
@@ -911,6 +1119,7 @@ class _$LoadedImpl implements _Loaded {
     TResult? Function()? empty,
     TResult? Function()? success,
     TResult? Function(String message)? error,
+    TResult? Function()? updated,
   }) {
     return loaded?.call(incidents);
   }
@@ -924,6 +1133,7 @@ class _$LoadedImpl implements _Loaded {
     TResult Function()? empty,
     TResult Function()? success,
     TResult Function(String message)? error,
+    TResult Function()? updated,
     required TResult orElse(),
   }) {
     if (loaded != null) {
@@ -941,6 +1151,7 @@ class _$LoadedImpl implements _Loaded {
     required TResult Function(_Empty value) empty,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
+    required TResult Function(_Updated value) updated,
   }) {
     return loaded(this);
   }
@@ -954,6 +1165,7 @@ class _$LoadedImpl implements _Loaded {
     TResult? Function(_Empty value)? empty,
     TResult? Function(_Success value)? success,
     TResult? Function(_Error value)? error,
+    TResult? Function(_Updated value)? updated,
   }) {
     return loaded?.call(this);
   }
@@ -967,6 +1179,7 @@ class _$LoadedImpl implements _Loaded {
     TResult Function(_Empty value)? empty,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
+    TResult Function(_Updated value)? updated,
     required TResult orElse(),
   }) {
     if (loaded != null) {
@@ -1037,6 +1250,7 @@ class _$EmptyImpl implements _Empty {
     required TResult Function() empty,
     required TResult Function() success,
     required TResult Function(String message) error,
+    required TResult Function() updated,
   }) {
     return empty();
   }
@@ -1050,6 +1264,7 @@ class _$EmptyImpl implements _Empty {
     TResult? Function()? empty,
     TResult? Function()? success,
     TResult? Function(String message)? error,
+    TResult? Function()? updated,
   }) {
     return empty?.call();
   }
@@ -1063,6 +1278,7 @@ class _$EmptyImpl implements _Empty {
     TResult Function()? empty,
     TResult Function()? success,
     TResult Function(String message)? error,
+    TResult Function()? updated,
     required TResult orElse(),
   }) {
     if (empty != null) {
@@ -1080,6 +1296,7 @@ class _$EmptyImpl implements _Empty {
     required TResult Function(_Empty value) empty,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
+    required TResult Function(_Updated value) updated,
   }) {
     return empty(this);
   }
@@ -1093,6 +1310,7 @@ class _$EmptyImpl implements _Empty {
     TResult? Function(_Empty value)? empty,
     TResult? Function(_Success value)? success,
     TResult? Function(_Error value)? error,
+    TResult? Function(_Updated value)? updated,
   }) {
     return empty?.call(this);
   }
@@ -1106,6 +1324,7 @@ class _$EmptyImpl implements _Empty {
     TResult Function(_Empty value)? empty,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
+    TResult Function(_Updated value)? updated,
     required TResult orElse(),
   }) {
     if (empty != null) {
@@ -1168,6 +1387,7 @@ class _$SuccessImpl implements _Success {
     required TResult Function() empty,
     required TResult Function() success,
     required TResult Function(String message) error,
+    required TResult Function() updated,
   }) {
     return success();
   }
@@ -1181,6 +1401,7 @@ class _$SuccessImpl implements _Success {
     TResult? Function()? empty,
     TResult? Function()? success,
     TResult? Function(String message)? error,
+    TResult? Function()? updated,
   }) {
     return success?.call();
   }
@@ -1194,6 +1415,7 @@ class _$SuccessImpl implements _Success {
     TResult Function()? empty,
     TResult Function()? success,
     TResult Function(String message)? error,
+    TResult Function()? updated,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -1211,6 +1433,7 @@ class _$SuccessImpl implements _Success {
     required TResult Function(_Empty value) empty,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
+    required TResult Function(_Updated value) updated,
   }) {
     return success(this);
   }
@@ -1224,6 +1447,7 @@ class _$SuccessImpl implements _Success {
     TResult? Function(_Empty value)? empty,
     TResult? Function(_Success value)? success,
     TResult? Function(_Error value)? error,
+    TResult? Function(_Updated value)? updated,
   }) {
     return success?.call(this);
   }
@@ -1237,6 +1461,7 @@ class _$SuccessImpl implements _Success {
     TResult Function(_Empty value)? empty,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
+    TResult Function(_Updated value)? updated,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -1326,6 +1551,7 @@ class _$ErrorImpl implements _Error {
     required TResult Function() empty,
     required TResult Function() success,
     required TResult Function(String message) error,
+    required TResult Function() updated,
   }) {
     return error(message);
   }
@@ -1339,6 +1565,7 @@ class _$ErrorImpl implements _Error {
     TResult? Function()? empty,
     TResult? Function()? success,
     TResult? Function(String message)? error,
+    TResult? Function()? updated,
   }) {
     return error?.call(message);
   }
@@ -1352,6 +1579,7 @@ class _$ErrorImpl implements _Error {
     TResult Function()? empty,
     TResult Function()? success,
     TResult Function(String message)? error,
+    TResult Function()? updated,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -1369,6 +1597,7 @@ class _$ErrorImpl implements _Error {
     required TResult Function(_Empty value) empty,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
+    required TResult Function(_Updated value) updated,
   }) {
     return error(this);
   }
@@ -1382,6 +1611,7 @@ class _$ErrorImpl implements _Error {
     TResult? Function(_Empty value)? empty,
     TResult? Function(_Success value)? success,
     TResult? Function(_Error value)? error,
+    TResult? Function(_Updated value)? updated,
   }) {
     return error?.call(this);
   }
@@ -1395,6 +1625,7 @@ class _$ErrorImpl implements _Error {
     TResult Function(_Empty value)? empty,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
+    TResult Function(_Updated value)? updated,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -1414,4 +1645,141 @@ abstract class _Error implements IncidentState {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$UpdatedImplCopyWith<$Res> {
+  factory _$$UpdatedImplCopyWith(
+    _$UpdatedImpl value,
+    $Res Function(_$UpdatedImpl) then,
+  ) = __$$UpdatedImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$UpdatedImplCopyWithImpl<$Res>
+    extends _$IncidentStateCopyWithImpl<$Res, _$UpdatedImpl>
+    implements _$$UpdatedImplCopyWith<$Res> {
+  __$$UpdatedImplCopyWithImpl(
+    _$UpdatedImpl _value,
+    $Res Function(_$UpdatedImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of IncidentState
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$UpdatedImpl implements _Updated {
+  const _$UpdatedImpl();
+
+  @override
+  String toString() {
+    return 'IncidentState.updated()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$UpdatedImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(List<IncidentDto> incidents) loaded,
+    required TResult Function() empty,
+    required TResult Function() success,
+    required TResult Function(String message) error,
+    required TResult Function() updated,
+  }) {
+    return updated();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(List<IncidentDto> incidents)? loaded,
+    TResult? Function()? empty,
+    TResult? Function()? success,
+    TResult? Function(String message)? error,
+    TResult? Function()? updated,
+  }) {
+    return updated?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(List<IncidentDto> incidents)? loaded,
+    TResult Function()? empty,
+    TResult Function()? success,
+    TResult Function(String message)? error,
+    TResult Function()? updated,
+    required TResult orElse(),
+  }) {
+    if (updated != null) {
+      return updated();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Empty value) empty,
+    required TResult Function(_Success value) success,
+    required TResult Function(_Error value) error,
+    required TResult Function(_Updated value) updated,
+  }) {
+    return updated(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Empty value)? empty,
+    TResult? Function(_Success value)? success,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Updated value)? updated,
+  }) {
+    return updated?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Loaded value)? loaded,
+    TResult Function(_Empty value)? empty,
+    TResult Function(_Success value)? success,
+    TResult Function(_Error value)? error,
+    TResult Function(_Updated value)? updated,
+    required TResult orElse(),
+  }) {
+    if (updated != null) {
+      return updated(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Updated implements IncidentState {
+  const factory _Updated() = _$UpdatedImpl;
 }

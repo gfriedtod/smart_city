@@ -16,6 +16,9 @@ public class AIncidentAdapter implements AIncidentOutputPort {
 
     @Override
     public void updateIncident(ChangeIncidentStatusRequest request) {
-        incidentRepository.changeIncidentStatus(request.status(), request.id());
+        System.out.println(request.status());
+        System.out.println(request.id());
+
+        incidentRepository.changeIncidentStatus(request.status().name(), request.id());
     }
 }

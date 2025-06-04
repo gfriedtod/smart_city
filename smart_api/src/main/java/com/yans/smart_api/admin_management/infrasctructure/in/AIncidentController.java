@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @CrossOrigin("*")
-@RequestMapping("admin/Incident")
-@PreAuthorize("hasRole('ADMIN')")
+@RequestMapping("admin/incident")
+//@PreAuthorize("hasRole('ADMIN')")
 class AIncidentController {
 
     private final AIncidentInput incidentInput;
@@ -23,12 +23,12 @@ class AIncidentController {
 
     @PutMapping("/changeStatus")
     public ResponseEntity<?> changeIncidentStatus(@RequestBody ChangeIncidentStatusRequest request) {
-         try {
+//         try {
              incidentInput.changeStatus(request);
              return ResponseEntity.ok().build();
-         } catch (Exception e) {
-             log.error(e.getMessage());
-             return ResponseEntity.badRequest().build();
-         }
+//         } catch (Exception e) {
+//             log.error(e.getCause().getMessage());
+//             return ResponseEntity.badRequest().build();
+//         }
     }
 }

@@ -19,7 +19,8 @@ enum ApiEndpoint {
   
   /// User incidents list endpoint
   incidents('$baseUrl/user/incidents'),
-  
+
+  status('$baseUrl/admin/incident/changeStatus'),
   /// Single incident endpoint
   incident('$baseUrl/user/incident');
 

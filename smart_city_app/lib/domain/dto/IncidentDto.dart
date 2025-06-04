@@ -49,7 +49,9 @@ class IncidentDto {
       updatedAt: DateTime.parse(json['updatedAt']), //json['updatedAt'],
       user: UserDto.fromJson(json['user']),
       category: CategoryDto.fromJson(json['category']),
-      status: IncidentStatus.values.byName(json['status']), //IncidentStatus.values[json['status']],
+      status: IncidentStatus.values.byName(
+        json['status'],
+      ), //IncidentStatus.values[json['status']],
       address: json['address'],
     );
   }
@@ -108,8 +110,9 @@ class IncidentDto {
 
 enum IncidentStatus {
   SUBMIT('SUBMIT'),
-  IN_PROGRESS('IN_PROGRESS'),
-  RESOLVED('RESOLVED');
+  PROGRESS('IN_PROGRESS'),
+  RESOLVED('RESOLVED'),
+  REJECTED('REJECTED');
 
   const IncidentStatus(this.url);
 

@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smart_city_app/domain/dto/CategoryDto.dart';
@@ -13,6 +14,7 @@ import 'package:smart_city_app/fake_core/data/model/incident.dart';
 import 'package:smart_city_app/fake_core/data/model/incident.dart';
 import 'package:smart_city_app/presentation/components/IncidentCard.dart';
 
+import '../../../core/constants/route.dart';
 import '../../providers/incident/incident_bloc.dart';
 import '../onboarding/color.dart';
 import '../profile/ProfilePage.dart';
@@ -607,7 +609,7 @@ class _MockDataState extends State<MockData>
             ),
           ),
           const SizedBox(height: 20),
-      
+
           // Barre d'onglets
           Container(
             height: 40,
@@ -631,7 +633,7 @@ class _MockDataState extends State<MockData>
             ),
           ),
           const SizedBox(height: 20),
-      
+
           // Contenu des onglets
           SizedBox(
             height: 280, // Hauteur fixe pour les contenus des onglets
@@ -719,7 +721,7 @@ class _MockDataState extends State<MockData>
             ),
           ),
           const SizedBox(height: 30),
-      
+
           // Title section
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -732,7 +734,7 @@ class _MockDataState extends State<MockData>
             ],
           ),
           const SizedBox(height: 10),
-      
+
           // Categories
           SizedBox(
             height: 35,
@@ -764,15 +766,22 @@ class _MockDataState extends State<MockData>
             ),
           ),
           const SizedBox(height: 20),
-      
+
           // List of Incidents
           SizedBox(
             height: 300,
             child: Expanded(
               child: ListView.builder(
                 itemCount: incidents.length,
-                itemBuilder: (context, index) =>
-                    IncidentcardListItem(incident: incidents[index]),
+                itemBuilder: (context, index) => InkWell(
+                  onTap: () {
+                    context.push(
+                      RoutesPath.incidentDetails.path,
+                      extra: incidents[index],
+                    );
+                  },
+                  child: IncidentcardListItem(incident: incidents[index]),
+                ),
               ),
             ),
           ),

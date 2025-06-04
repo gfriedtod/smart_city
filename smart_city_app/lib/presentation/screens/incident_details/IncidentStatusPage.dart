@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:smart_city_app/domain/dto/IncidentDto.dart';
 
 import '../../../fake_core/data/IncidentCard_data.dart';
 import '../../../fake_core/data/model/incident.dart';
@@ -17,13 +18,15 @@ class IncidentStatusPage extends StatefulWidget {
 
 class _IncidentStatusPageState extends State<IncidentStatusPage> {
   String _selectedFilter = 'All'; // Filtre sélectionné par défaut
-  late List<Incident> _filteredIncidents;
-  late List<Incident> _allIncidents; // Copie de la liste originale
+  late List<IncidentDto> _filteredIncidents;
+  late List<IncidentDto> _allIncidents; // Copie de la liste originale
 
   @override
   void initState() {
     super.initState();
-    _allIncidents = List.from(IncidentArticlesData); // Copie pour pouvoir supprimer des éléments
+    _allIncidents = List.from(
+      IncidentArticlesData,
+    ); // Copie pour pouvoir supprimer des éléments
     _filterIncidents(); // Filtrer les incidents au démarrage
   }
 
@@ -32,15 +35,21 @@ class _IncidentStatusPageState extends State<IncidentStatusPage> {
       if (_selectedFilter == 'All') {
         _filteredIncidents = List.from(_allIncidents);
       } else if (_selectedFilter == 'Pending') {
-        _filteredIncidents = _allIncidents.where((incident) =>
-        incident.initialStatus == 'Reported' ||
-            incident.initialStatus == 'In_Progress').toList();
+        _filteredIncidents = _allIncidents
+            .where(
+              (incident) =>
+                  incident.status == IncidentStatus.SUBMIT ||
+                  incident.status == IncidentStatus.PROGRESS,
+            )
+            .toList();
       } else if (_selectedFilter == 'Treated') {
-        _filteredIncidents = _allIncidents.where((incident) =>
-        incident.initialStatus == 'Resolved').toList();
-      } else if (_selectedFilter == 'Rejected') {
-        _filteredIncidents = _allIncidents.where((incident) =>
-        incident.initialStatus == 'Rejected').toList();
+        _filteredIncidents = _allIncidents
+            .where((incident) => incident.status == IncidentStatus.RESOLVED)
+            .toList();
+      } else if (_selectedFilter == IncidentStatus.REJECTED) {
+        _filteredIncidents = _allIncidents
+            .where((incident) => incident.status == IncidentStatus.REJECTED)
+            .toList();
       }
     });
   }
@@ -52,14 +61,16 @@ class _IncidentStatusPageState extends State<IncidentStatusPage> {
     });
   }
 
-  void _deleteIncident(Incident incidentToDelete) {
+  void _deleteIncident(IncidentDto incidentToDelete) {
     setState(() {
       _allIncidents.remove(incidentToDelete); // Supprime de la liste principale
       _filterIncidents(); // Re-filtre pour mettre à jour l'affichage
     });
     // Optionnel: Afficher un SnackBar ou une confirmation
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Incident "${incidentToDelete.title}" supprimé.')),
+      SnackBar(
+        content: Text('Incident "${incidentToDelete.name ?? 'N/A'}" supprimé.'),
+      ),
     );
   }
 
@@ -75,10 +86,7 @@ class _IncidentStatusPageState extends State<IncidentStatusPage> {
         ),
         title: const Text(
           'Statut d\'incidents',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: Colors.white,
@@ -89,20 +97,29 @@ class _IncidentStatusPageState extends State<IncidentStatusPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-            child: Container( // Le conteneur principal pour la barre segmentée
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24.0,
+              vertical: 16.0,
+            ),
+            child: Container(
+              // Le conteneur principal pour la barre segmentée
               height: 45, // Hauteur de la barre
               decoration: BoxDecoration(
                 color: Colors.grey[200], // Couleur de fond de la barre
-                borderRadius: BorderRadius.circular(25), // Coins arrondis de la barre
+                borderRadius: BorderRadius.circular(
+                  25,
+                ), // Coins arrondis de la barre
                 border: Border.all(color: Colors.grey[300]!), // Bordure légère
               ),
-              child: Row( // La Row pour les segments
+              child: Row(
+                // La Row pour les segments
                 children: [
                   _buildSegmentedFilterButton('All'),
                   _buildSegmentedFilterButton('Pending'),
                   _buildSegmentedFilterButton('Treated'),
-                  _buildSegmentedFilterButton('Rejected'), // Ajoutez Rejected ici si vous voulez 4 segments
+                  _buildSegmentedFilterButton(
+                    'Rejected',
+                  ), // Ajoutez Rejected ici si vous voulez 4 segments
                 ],
               ),
             ),
@@ -121,22 +138,27 @@ class _IncidentStatusPageState extends State<IncidentStatusPage> {
           Expanded(
             child: _filteredIncidents.isEmpty
                 ? const Center(
-              child: Text(
-                'Aucun incident trouvé pour ce statut.',
-                style: TextStyle(fontSize: 16, color: Colors.grey),
-              ),
-            )
+                    child: Text(
+                      'Aucun incident trouvé pour ce statut.',
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                  )
                 : ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
-              itemCount: _filteredIncidents.length,
-              itemBuilder: (context, index) {
-                final incident = _filteredIncidents[index];
-                return IncidentStatusCard(
-                  incident: incident,
-                  onDelete: () => _deleteIncident(incident), // Passer le callback de suppression
-                );
-              },
-            ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24.0,
+                      vertical: 10.0,
+                    ),
+                    itemCount: _filteredIncidents.length,
+                    itemBuilder: (context, index) {
+                      final incident = _filteredIncidents[index];
+                      return IncidentStatusCard(
+                        incident: incident,
+                        onDelete: () => _deleteIncident(
+                          incident,
+                        ), // Passer le callback de suppression
+                      );
+                    },
+                  ),
           ),
         ],
       ),
@@ -145,15 +167,20 @@ class _IncidentStatusPageState extends State<IncidentStatusPage> {
 
   Widget _buildSegmentedFilterButton(String label) {
     bool isSelected = _selectedFilter == label;
-    return Expanded( // Permet à chaque segment de prendre une part égale de l'espace
+    return Expanded(
+      // Permet à chaque segment de prendre une part égale de l'espace
       child: GestureDetector(
         onTap: () => _onFilterSelected(label),
         child: Container(
           alignment: Alignment.center, // Centre le texte
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFF2C5E2E) : Colors.transparent, // Couleur verte pour sélection
-            borderRadius: BorderRadius.circular(20), // Coins arrondis pour le segment sélectionné
+            color: isSelected
+                ? const Color(0xFF2C5E2E)
+                : Colors.transparent, // Couleur verte pour sélection
+            borderRadius: BorderRadius.circular(
+              20,
+            ), // Coins arrondis pour le segment sélectionné
           ),
           child: Text(
             label,
