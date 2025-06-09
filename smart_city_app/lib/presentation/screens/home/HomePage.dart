@@ -66,25 +66,22 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
 
   @override
   Widget build(BuildContext context) {
-    print( ModalRoute.of(context)?.settings.name);
-    print(ModalRoute.of(context)?.settings.name ==
-        RoutesPath.home.path);
+    print(ModalRoute.of(context)?.settings.name);
+    print(ModalRoute.of(context)?.settings.name == RoutesPath.home.path);
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: BlocConsumer<IncidentBloc, IncidentState>(
           listenWhen: (previous, current) {
-
             return previous != current &&
-                ModalRoute.of(context)?.settings.name ==
-                    RoutesPath.home.path;
+                ModalRoute.of(context)?.settings.name == RoutesPath.home.path;
           },
+
           // buildWhen: (previous, current) {
           //   return previous != current &&
           //       ModalRoute.of(context)?.settings.name ==
           //           RoutesPath.root.path.replaceAll('/', '');
           // },
-
           listener: (context, state) {
             state.maybeWhen(
               orElse: () {},
@@ -309,6 +306,9 @@ class _MockDataState extends State<MockData>
   int _touchedSpotIndex = -1; // Pour gérer l'effet de survol sur le graphique
 
   int _currentTabIndex = 0;
+
+  int selectedIndex = 0;
+  List<IncidentDto> incidentsFiltered = [];
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
@@ -326,6 +326,10 @@ class _MockDataState extends State<MockData>
   Widget build(BuildContext context) {
     final categorys = context.watch<IncidentBloc>().categorys;
     final incidents = context.watch<IncidentBloc>().incidents;
+    setState(() {
+      incidentsFiltered = incidents;
+
+    });
     Widget _buildFilterButton(String text) {
       bool isSelected = _selectedFilter == text;
       return GestureDetector(
@@ -752,28 +756,42 @@ class _MockDataState extends State<MockData>
 
           // Categories
           SizedBox(
-            height: 35,
+            height: 40,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemCount: categorys.length,
               separatorBuilder: (_, __) => const SizedBox(width: 10),
               itemBuilder: (context, index) {
-                final isSelected = index == 0;
-                return Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  decoration: BoxDecoration(
-                    color: isSelected ? primaryColor : Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: isSelected ? primaryColor : Colors.grey.shade200,
+                final isSelected = index == selectedIndex;
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedIndex = index;
+                      incidentsFiltered = incidents
+                          .where(
+                            (incident) =>
+                                incident.category?.id == categorys[index].id,
+                          )
+                          .toList();
+                    });
+                    print('Catégorie sélectionnée : ${categorys[index]}');
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                      color: isSelected ? primaryColor : Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: isSelected ? Colors.transparent : Colors.grey,
+                      ),
                     ),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    categorys[index].name,
-                    style: TextStyle(
-                      color: isSelected ? Colors.white : Colors.black,
-                      fontWeight: FontWeight.w500,
+                    alignment: Alignment.center,
+                    child: Text(
+                      categorys[index].name,
+                      style: TextStyle(
+                        color: isSelected ? Colors.white : Colors.black,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 );
@@ -787,15 +805,15 @@ class _MockDataState extends State<MockData>
             height: 300,
             child: Expanded(
               child: ListView.builder(
-                itemCount: incidents.length,
+                itemCount: incidentsFiltered.length,
                 itemBuilder: (context, index) => InkWell(
                   onTap: () {
                     context.push(
                       RoutesPath.incidentDetails.path,
-                      extra: incidents[index],
+                      extra: incidentsFiltered[index],
                     );
                   },
-                  child: IncidentcardListItem(incident: incidents[index]),
+                  child: IncidentcardListItem(incident: incidentsFiltered[index]),
                 ),
               ),
             ),

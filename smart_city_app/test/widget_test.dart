@@ -1,30 +1,53 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:smart_city_app/main.dart';
+import 'package:smart_city_app/presentation/screens/login/SigninPage.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  group('Login Page Widget Tests', () {
+    testWidgets('Login page shows email and password fields',
+            (WidgetTester tester) async {
+          await tester.pumpWidget(const MaterialApp(home: SignInPage()));
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+          expect(find.byType(TextFormField), findsNWidgets(2));
+          expect(find.byType(ElevatedButton), findsOneWidget);
+        });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    testWidgets('Shows error on empty email field',
+            (WidgetTester tester) async {
+          await tester.pumpWidget(const MaterialApp(home: SignInPage()));
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+          await tester.tap(find.byType(ElevatedButton));
+          await tester.pump();
+
+          expect(find.text('Email is required'), findsOneWidget);
+        });
+
+    testWidgets('Shows error on invalid email format',
+            (WidgetTester tester) async {
+          await tester.pumpWidget(const MaterialApp(home: SignInPage()));
+
+          await tester.enterText(
+              find
+                  .byType(TextFormField)
+                  .first, 'invalid-email');
+          await tester.tap(find.byType(ElevatedButton));
+          await tester.pump();
+
+          expect(find.text('Enter a valid email'), findsOneWidget);
+        });
+
+    testWidgets('Shows error on empty password field',
+            (WidgetTester tester) async {
+          await tester.pumpWidget(const MaterialApp(home: SignInPage()));
+
+          await tester.enterText(
+              find
+                  .byType(TextFormField)
+                  .first, 'test@example.com');
+          await tester.tap(find.byType(ElevatedButton));
+          await tester.pump();
+
+          expect(find.text('Password is required'), findsOneWidget);
+        });
   });
 }
