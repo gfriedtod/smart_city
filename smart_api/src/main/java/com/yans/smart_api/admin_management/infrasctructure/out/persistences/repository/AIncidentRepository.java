@@ -8,11 +8,12 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface AIncidentRepository extends JpaRepository<Incident, UUID>, JpaSpecificationExecutor<Incident> {
   @Transactional
   @Modifying
-  @Query("update Incident i set i.status = ?1 where i.id = ?2")
-  void changeIncidentStatus(IncidentStatus status, UUID id);
+  @Query(value = "UPDATE Incident i SET status = :status WHERE i.id = :id",nativeQuery = true)
+  void changeIncidentStatus(String status, UUID id);
 }

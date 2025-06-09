@@ -1,5 +1,6 @@
 // Fichier : lib/widgets/incident_list_item.dart
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -36,12 +37,14 @@ class IncidentcardListItem extends StatelessWidget {
           // Image à gauche
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Image.network(
-              incident.image ?? 'https://ifthknoghckblnvnkbld.supabase.co/storage/v1/object/public/avatars/56a14781-1822-4a0c-8fc8-ac985405f2071748999119692.png',
+            child: CachedNetworkImage(
               // Accès direct à la propriété 'image' de l'objet incident
               width: 110,
               height: 110,
               fit: BoxFit.cover,
+              imageUrl:
+                  incident.image ??
+                  'https://ifthknoghckblnvnkbld.supabase.co/storage/v1/object/public/avatars/56a14781-1822-4a0c-8fc8-ac985405f2071748999119692.png',
             ),
           ),
           const SizedBox(width: 15),
@@ -93,12 +96,13 @@ class IncidentcardListItem extends StatelessWidget {
                     ),
                     const SizedBox(width: 5),
                     Text(
-                      DateFormat('dd MMM,yyyy').format(incident.createdAt ?? DateTime.now()),
+                      DateFormat(
+                        'dd MMM,yyyy',
+                      ).format(incident.createdAt ?? DateTime.now()),
                       // Accès direct à la propriété 'date'
                       style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                     ),
                     const SizedBox(width: 10),
-
                   ],
                 ),
               ],

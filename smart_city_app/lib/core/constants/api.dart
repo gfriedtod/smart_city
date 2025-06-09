@@ -1,9 +1,14 @@
+import 'dart:developer';
+
+import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 
+final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+
 /// Base URL for the API endpoints
-const String baseUrl = 'http://192.168.24.164:8080/api/v1';
+const String baseUrl = 'http://10.0.2.2:8080/api/v1';
 
 /// Enum representing API endpoints for authentication and user operations
 enum ApiEndpoint {
@@ -19,7 +24,8 @@ enum ApiEndpoint {
   
   /// User incidents list endpoint
   incidents('$baseUrl/user/incidents'),
-  
+
+  status('$baseUrl/admin/incident/changeStatus'),
   /// Single incident endpoint
   incident('$baseUrl/user/incident');
 
@@ -46,7 +52,9 @@ Future<String> uploadFile(file) async {
         .getPublicUrl(fileName);
 
     return imageUrl;
-  } catch (e) {
+  } catch (e,trace) {
+    log(e.toString());
+    log(trace.toString());
     throw Exception('Error uploading file: $e');
   }
 }

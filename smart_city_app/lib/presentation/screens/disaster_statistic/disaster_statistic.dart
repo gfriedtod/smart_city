@@ -56,6 +56,7 @@
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart'; // Pour la date
@@ -81,10 +82,19 @@ class _DisasterStatisticsPageState extends State<DisasterStatisticsPage>
       DateTime.now(); // Date par défaut pour le filtre date
   int _touchedSpotIndex = -1; // Pour gérer l'effet de survol sur le graphique
 
+  int _currentTabIndex = 0;
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      if (!_tabController.indexIsChanging) {
+        // S'assure que l'index est stable après le changement
+        setState(() {
+          _currentTabIndex = _tabController.index;
+        });
+      }
+    });
   }
 
   @override
@@ -174,6 +184,9 @@ class _DisasterStatisticsPageState extends State<DisasterStatisticsPage>
 
   @override
   Widget build(BuildContext context) {
+    final double tabBarViewHeight =
+        280.0; // 280 pour la carte, 350 pour les graphiques
+
     final List<String> categories = const [
       "Infrastructure",
       "Hygiène",
@@ -237,7 +250,7 @@ class _DisasterStatisticsPageState extends State<DisasterStatisticsPage>
                 unselectedLabelColor: Colors.black54,
                 tabs: const [
                   Tab(text: 'Graphique'),
-                  Tab(text: 'Répartition'),
+                  Tab(text: 'Map'),
                 ],
               ),
             ),
@@ -245,14 +258,88 @@ class _DisasterStatisticsPageState extends State<DisasterStatisticsPage>
 
             // Contenu des onglets
             SizedBox(
-              height: 350, // Hauteur fixe pour les contenus des onglets
+              height:
+                  tabBarViewHeight, // Hauteur fixe pour les contenus des onglets
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  _buildLineChartTab(),
+                  Expanded(child: _buildLineChartTab()),
                   // Onglet pour le graphique linéaire
-                  _buildCircularChartTab(),
+                  // _buildCircularChartTab(),
                   // Onglet pour le graphique circulaire
+                  Stack(
+                    children: [
+                      Container(
+                        height: 220,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.grey.shade100,
+                        ),
+                        child: Expanded(
+                          child: OSMFlutter(
+                            controller: MapController(
+                              initPosition: GeoPoint(
+                                latitude: 47.4358055,
+                                longitude: 8.4737324,
+                              ),
+                              areaLimit: const BoundingBox(
+                                east: 10.4922941,
+                                north: 47.8084648,
+                                south: 45.817995,
+                                west: 5.9559113,
+                              ),
+                            ),
+                            osmOption: OSMOption(
+                              userTrackingOption: const UserTrackingOption(
+                                enableTracking: true,
+                                unFollowUser: false,
+                              ),
+                              zoomOption: const ZoomOption(
+                                initZoom: 8,
+                                minZoomLevel: 3,
+                                maxZoomLevel: 19,
+                                stepZoom: 1.0,
+                              ),
+                              userLocationMarker: UserLocationMaker(
+                                personMarker: const MarkerIcon(
+                                  icon: Icon(
+                                    Icons.location_history_rounded,
+                                    color: Colors.red,
+                                    size: 48,
+                                  ),
+                                ),
+                                directionArrowMarker: const MarkerIcon(
+                                  icon: Icon(Icons.double_arrow, size: 48),
+                                ),
+                              ),
+                              roadConfiguration: const RoadOption(
+                                roadColor: Colors.yellowAccent,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Positioned(
+                        top: 10,
+                        right: 10,
+                        child: Icon(Icons.settings),
+                      ),
+                      const Positioned(
+                        bottom: 10,
+                        left: 10,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Earthquake in New York",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text("📅 Sun, 11 June 2024    ⏱ 3 min ago"),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -309,9 +396,7 @@ class _DisasterStatisticsPageState extends State<DisasterStatisticsPage>
                 // Désactive le défilement du ListView lui-même
                 itemCount: _disasterArticles.length,
                 itemBuilder: (context, index) {
-                  return IncidentcardListItem(
-                    incident: IncidentDto(),
-                  );
+                  return IncidentcardListItem(incident: IncidentDto());
                 },
               ),
             ),
@@ -327,67 +412,69 @@ class _DisasterStatisticsPageState extends State<DisasterStatisticsPage>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Filtres (1D, 1W, 4M, 8M, All, Date)
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _buildFilterButton('1D'),
-            _buildFilterButton('1W'),
-            _buildFilterButton('4M'),
-            _buildFilterButton('8M'),
-            _buildFilterButton('All'),
-            GestureDetector(
-              onTap: () async {
-                final DateTime? picked = await showDatePicker(
-                  context: context,
-                  initialDate: _selectedDate,
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2025),
-                );
-                if (picked != null && picked != _selectedDate) {
-                  setState(() {
-                    _selectedDate = picked;
-                  });
-                }
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.calendar_today,
-                      size: 18,
-                      color: Colors.black87,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      DateFormat('MMM yyyy').format(_selectedDate),
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
+        FittedBox(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildFilterButton('1D'),
+              _buildFilterButton('1W'),
+              _buildFilterButton('4M'),
+              _buildFilterButton('8M'),
+              _buildFilterButton('All'),
+              GestureDetector(
+                onTap: () async {
+                  final DateTime? picked = await showDatePicker(
+                    context: context,
+                    initialDate: _selectedDate,
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2025),
+                  );
+                  if (picked != null && picked != _selectedDate) {
+                    setState(() {
+                      _selectedDate = picked;
+                    });
+                  }
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.calendar_today,
+                        size: 18,
+                        color: Colors.black87,
                       ),
-                    ),
-                    const Icon(
-                      Icons.arrow_drop_down,
-                      size: 24,
-                      color: Colors.black87,
-                    ),
-                  ],
+                      const SizedBox(width: 8),
+                      Text(
+                        DateFormat('MMM yyyy').format(_selectedDate),
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const Icon(
+                        Icons.arrow_drop_down,
+                        size: 24,
+                        color: Colors.black87,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         const SizedBox(height: 20),
-        SizedBox(
-          height: 250,
-          child: Expanded(
+        Expanded(
+          child: SizedBox(
+            height: 280,
             child: Padding(
               padding: const EdgeInsets.only(right: 16.0, top: 16.0),
               child: LineChart(

@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:smart_city_app/infrastructure/out/api/i_auth_impl.dart';
 import 'package:smart_city_app/presentation/kernel.dart';
 import 'package:smart_city_app/presentation/providers/authentication/auth_bloc.dart';
@@ -15,8 +16,11 @@ import 'package:smart_city_app/presentation/screens/onboarding/onboardinpage.dar
 import 'package:smart_city_app/presentation/screens/profile/ProfilePage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthResponse;
 
+import 'core/constants/api.dart';
 import 'core/constants/route.dart';
 import 'domain/dto/AuthResponse.dart';
+import 'infrastructure/in/notification/notification_services.dart';
+import 'infrastructure/in/rabbitmq_repository.dart';
 import 'infrastructure/out/api/i_incident_impl.dart';
 
 Future<void> main() async {
@@ -26,7 +30,17 @@ Future<void> main() async {
     anonKey:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlmdGhrbm9naGNrYmxudm5rYmxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg1MzgyODcsImV4cCI6MjA2NDExNDI4N30.DXnyknmEK7p7fh0MXwlqNns-f4HivKXiKKT5YWoiymE',
   );
+
   await initLocalStorage();
+  PermissionStatus status = await Permission.notification.request();
+
+  if (!status.isGranted) {
+    await Permission.notification.request();
+  } else {
+    NotificationService.init();
+  }
+  RabbitMQService rabbitmqService = RabbitMQService();
+  rabbitmqService.connect();
   runApp(MyApp());
 }
 
@@ -37,6 +51,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     dioInterceptor(context);
+
     var auth = IAuthImpl(dio);
     var incident = IIncidentImpl(dio);
     return MultiRepositoryProvider(
@@ -54,6 +69,7 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp.router(
           routerConfig: router,
+          scaffoldMessengerKey: scaffoldMessengerKey,
           title: 'Dev',
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
@@ -123,6 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //

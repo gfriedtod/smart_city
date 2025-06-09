@@ -5,6 +5,9 @@ import lombok.RequiredArgsConstructor;
 import com.yans.smart_api.core.dto.IncidentDto;
 import com.yans.smart_api.entity.Incident;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+
 @Component
 @RequiredArgsConstructor
 public class IncidentMapper {
@@ -45,6 +48,9 @@ public class IncidentMapper {
         incident.setLongitude(incidentDto.getLongitude());
         incident.setLatitude(incidentDto.getLatitude());
         incident.setAppUser(userMapper.toEntity(incidentDto.getUser()));
+        incident.setCreatedAt(OffsetDateTime.from(incidentDto.getCreatedAt().atOffset(ZoneOffset.of("+01:00"))));
+        incident.setUpdatedAt(incidentDto.getUpdatedAt().atOffset(ZoneOffset.of("+01:00")));
+
         incident.setCategory(categoryMapper.toEntity(incidentDto.getCategory()));
         incident.setStatus(incidentDto.getStatus());
         incident.setAddress(incidentDto.getAddress());

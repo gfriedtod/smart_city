@@ -7,6 +7,7 @@ import 'package:smart_city_app/core/constants/api.dart';
 import 'package:smart_city_app/domain/dto/IncidentDto.dart';
 import '../../../domain/application/i_incident.dart';
 import '../../../domain/dto/CategoryDto.dart';
+import '../../../domain/dto/change_incident_status_request.dart';
 
 part 'incident_event.dart';
 part 'incident_state.dart';
@@ -44,7 +45,18 @@ class IncidentBloc extends Bloc<IncidentEvent, IncidentState> {
             final incident = value.incident.copyWith(image: imageUrl);
             incidentImpl.addIncident(incident);
             emit(const IncidentState.success());
-          } catch (e,trace) {
+          } catch (e, trace) {
+            log(trace.toString());
+            emit(IncidentState.error("we have an error"));
+          }
+        },
+        updateIncident: (_UpdateIncident value) async {
+          try {
+            emit(const IncidentState.loading());
+            await incidentImpl.updateIncident(value.incident);
+            emit(const IncidentState.updated());
+
+          } catch (e, trace) {
             log(trace.toString());
             emit(IncidentState.error("we have an error"));
           }

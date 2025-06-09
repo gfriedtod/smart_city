@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:smart_city_app/core/constants/route.dart';
 import 'package:smart_city_app/domain/dto/CategoryDto.dart';
+import 'package:smart_city_app/domain/dto/change_incident_status_request.dart';
 import 'package:smart_city_app/fake_core/data/model/incident.dart';
 
 import '../../../core/constants/api.dart';
@@ -45,6 +46,17 @@ class IIncidentImpl extends IIncident {
       return (response.data as List)
           .map<CategoryDto>((value) => CategoryDto.fromJson(value))
           .toList();
+    } catch (e, trace) {
+      log(e.toString());
+      log(trace.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateIncident(ChangeIncidentStatusRequest incident) async {
+    try {
+      await dio.put(ApiEndpoint.status.url, data: incident.toJson());
     } catch (e, trace) {
       log(e.toString());
       log(trace.toString());

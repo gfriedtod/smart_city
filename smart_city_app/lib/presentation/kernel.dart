@@ -5,6 +5,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:smart_city_app/core/constants/route.dart';
 import 'package:smart_city_app/presentation/screens/disaster_statistic/disaster_statistic.dart';
 import 'package:smart_city_app/presentation/screens/home/HomePage.dart';
+import 'package:smart_city_app/presentation/screens/incident_details/IncidentStatusPage.dart';
 import 'package:smart_city_app/presentation/screens/onboarding/color.dart';
 import 'package:smart_city_app/presentation/screens/onboarding/onboardinpage.dart';
 import 'package:smart_city_app/presentation/screens/profile/ProfilePage.dart';
@@ -23,7 +24,7 @@ class _KernelViewState extends State<KernelView> {
   List<Widget> pages = [
     const HomePage(),
     ProfilePage(),
-    const DisasterStatisticsPage(),
+    IncidentStatusPage(),
     ReportIncidentPage(),
   ];
   int index = 0;

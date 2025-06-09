@@ -5,8 +5,10 @@ import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:go_router/go_router.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:smart_city_app/domain/dto/AuthResponse.dart';
+import 'package:smart_city_app/domain/dto/IncidentDto.dart';
 import 'package:smart_city_app/presentation/kernel.dart';
 import 'package:smart_city_app/presentation/screens/home/HomePage.dart';
+import 'package:smart_city_app/presentation/screens/incident_details/IncidentDeatilPage.dart';
 import 'package:smart_city_app/presentation/screens/login/SigninPage.dart';
 import 'package:smart_city_app/presentation/screens/onboarding/onboardinpage.dart';
 import 'package:smart_city_app/presentation/screens/register/SignupPage.dart';
@@ -21,6 +23,7 @@ enum RoutesPath {
   signin('/signin'),
   profile('/profile'),
   report('/report'),
+  incidentDetails('/incidentDetails'),
   onboarding('/onboarding');
 
   final String path;
@@ -45,6 +48,12 @@ final router = GoRouter(
         }
         return RoutesPath.onboarding.path;
       },
+    ),
+    GoRoute(
+      name: 'incidentDetails',
+      path: RoutesPath.incidentDetails.path,
+      builder: (context, state) =>
+          IncidentDetailPage(incident: state.extra as IncidentDto),
     ),
     GoRoute(
       path: RoutesPath.report.path,

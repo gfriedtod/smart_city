@@ -8,4 +8,5 @@ class IncidentState with _$IncidentState {
   const factory IncidentState.empty() = _Empty;
   const factory IncidentState.success() = _Success;
   const factory IncidentState.error(String message) = _Error;
+  const factory IncidentState.updated() = _Updated;
 }

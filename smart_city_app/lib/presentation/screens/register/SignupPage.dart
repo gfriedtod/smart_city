@@ -6,6 +6,7 @@ import 'package:smart_city_app/presentation/components/button_comp.dart';
 import 'package:smart_city_app/presentation/kernel.dart';
 import 'package:smart_city_app/presentation/screens/onboarding/color.dart';
 
+import '../../../core/constants/api.dart';
 import '../../components/CustomPasswordField.dart';
 import '../../components/CustomTextField.dart';
 import '../../providers/authentication/auth_bloc.dart';
@@ -120,7 +121,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   },
                   failure: (state) {
                     if (context.mounted && state.failure != null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
+                      scaffoldMessengerKey.currentState?.showSnackBar(
                         SnackBar(
                           content: Text(state.failure.toString()),
                           duration: const Duration(seconds: 4),
